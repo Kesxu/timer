@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atmospheric Quote Focus Page</title>
+    <!-- Load Tailwind CSS for utility classes -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,100..1000&display=swap');
+
+        :root {
+            --c-glass: #bbbbbc;
+            --c-light: #ffffff;
+            --c-dark: #000000;
+            --c-content: #222244;
+            --c-action: #0052f5;
+            --c-bg: #E8E8E9;
+            --glass-reflex-dark: 1;
+            --glass-reflex-light: 1;
+            --saturation: 150%;
+            --fz: 0.9rem;
+        }
+
+        /* Full Screen Background Image Container */
+        .bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+        .bg-image.active {
+            opacity: 1;
+        }
+
+        body {
+            font-size: 20px;
+            font-family: "DM Sans", "SF Pro Rounded", "Avenir Next Rounded", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            font-optical-sizing: auto;
+            color: var(--c-content);
+            transition: color 400ms cubic-bezier(1, 0.0, 0.4, 1);
+        }
+
+        body:has(input[value="dark"]:checked) {
+            --c-glass: #bbbbbc;
+            --c-light: #ffffff;
+            --c-dark: #000000;
+            --c-content: #e1e1e1;
+            --c-action: #03d5ff;
+            --c-bg: #1b1b1d;
+            --glass-reflex-dark: 2;
+            --glass-reflex-light: 0.3;
+            --saturation: 150%;
+        }
+
+        body:has(input[value="dim"]:checked) {
+            --c-light: #99deff;
+            --c-dark: #20001b;
+            --c-glass: hsl(335 250% 74% / 1);
+            --c-content: #ffffff; /* Changed to pure white */
+            --c-action: #ff48a9;
+            --c-bg: #152433;
+            --glass-reflex-dark: 2;
+            --glass-reflex-ight: 0.7;
+            --saturation: 200%;
+        }
+
+        .switcher {
+            position: fixed;
+            z-index: 2;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 244px;
+            max-width: 244px;
+            height: 70px;
+            box-sizing: border-box;
+            padding: 8px 12px 10px;
+            border: none;
+            border-radius: 99em;
+            font-size: var(--fz);
+            background-color: color-mix(in srgb, var(--c-glass) 12%, transparent);
+            backdrop-filter: blur(8px) saturate(var(--saturation));
+            -webkit-backdrop-filter: blur(8px) saturate(var(--saturation));
+            box-shadow:
+                inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 10%), transparent),
+                inset 1.8px 3px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 90%), transparent),
+                inset -2px -2px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 80%), transparent),
+                inset -3px -8px 1px -6px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 60%), transparent),
+                inset -0.3px -1px 4px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 12%), transparent),
+                inset -1.5px 2.5px 0px -2px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
+                inset 0px 3px 4px -2px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
+                inset 2px -6.5px 1px -4px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
+                0px 1px 5px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
+                0px 6px 16px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 8%), transparent);
+            transition: background-color 400ms cubic-bezier(1, 0.0, 0.4, 1),
+                        box-shadow 400ms cubic-bezier(1, 0.0, 0.4, 1);
+        }
+
+        .switcher__legend {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            margin: -1px;
+            border: 0;
+            padding: 0;
+            white-space: nowrap;
+            clip-path: inset(100%);
+            clip: rect(0 0 0 0);
+            overflow: hidden;
+        }
+
+        .switcher__input {
+            clip: rect(0 0 0 0);
+            clip-path: inset(100%);
+            height: 1px;
+            width: 1px;
+            overflow: hidden;
+            position: absolute;
+            white-space: nowrap;
+        }
+
+        .switcher__filter {
+            position: absolute;
+            width: 0;
+            height: 0;
+            z-index: -1;
+        }
+
+        .switcher__option {
+            --c: var(--c-content);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 16px;
+            width: 68px;
+            height: 100%;
+            box-sizing: border-box;
+            border-radius: 99em;
+            opacity: 1;
+            transition: all 160ms;
+            color: white;
+            gap: 4px;
+        }
+
+        .switcher__icon {
+            display: block;
+            width: 100%;
+            text-align: center;
+            transition: scale 200ms cubic-bezier(0.5, 0, 0, 1);
+            font-size: 0.8rem;
+            letter-spacing: 0.08em;
+        }
+
+        .switcher__option:hover {
+            --c: var(--c-action);
+            cursor: pointer;
+        }
+
+        .switcher__option:hover .switcher__icon {
+            scale: 1.1;
+        }
+
+        .switcher__option:has(input:checked) {
+            --c: var(--c-content);
+            cursor: default;
+        }
+
+        .switcher__option:has(input:checked) .switcher__icon {
+            scale: 1;
+        }
+
+        .switcher::after {
+            content: '';
+            position: absolute;
+            left: 4px;
+            top: 4px;
+            display: block;
+            width: 84px;
+            height: calc(100% - 10px);
+            border-radius: 99em;
+            background-color: color-mix(in srgb, var(--c-glass) 36%, transparent);
+            z-index: -1;
+            box-shadow:
+                inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 10%), transparent),
+                inset 2px 1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 90%), transparent),
+                inset -1.5px -1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 80%), transparent),
+                inset -2px -6px 1px -5px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 60%), transparent),
+                inset -1px 2px 3px -1px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
+                inset 0px -4px 1px -2px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
+                0px 3px 6px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 8%), transparent);
+            transition: background-color 400ms cubic-bezier(1, 0.0, 0.4, 1),
+                        box-shadow 400ms cubic-bezier(1, 0.0, 0.4, 1),
+                        translate 400ms cubic-bezier(1, 0.0, 0.4, 1);
+        }
+
+        .switcher:has(input[c-option="1"]:checked)::after {
+            translate: 0 0;
+            transform-origin: right;
+            animation: scaleToggle 440ms ease;
+        }
+
+        .switcher:has(input[c-option="2"]:checked)::after {
+            translate: 76px 0;
+            animation: scaleToggle2 440ms ease;
+        }
+
+        .switcher:has(input[c-option="3"]:checked)::after {
+            translate: 152px 0;
+            transform-origin: left;
+            animation: scaleToggle3 440ms ease;
+        }
+
+        .switcher[c-previous="1"]:has(input[c-option="2"]:checked)::after {
+            transform-origin: left;
+        }
+
+        .switcher[c-previous="3"]:has(input[c-option="2"]:checked)::after {
+            transform-origin: right;
+        }
+
+        @keyframes scaleToggle {
+            0% { scale: 1 1; }
+            50% { scale: 1.1 1; }
+            100% { scale: 1 1; }
+        }
+
+        @keyframes scaleToggle2 {
+            0% { scale: 1 1; }
+            50% { scale: 1.2 1; }
+            100% { scale: 1 1; }
+        }
+
+        @keyframes scaleToggle3 {
+            0% { scale: 1 1; }
+            50% { scale: 1.1 1; }
+            100% { scale: 1 1; }
+        }
+
+        .article {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 5em 2em;
+        }
+
+        .article h1,
+        .article h2,
+        .article p,
+        .article blockquote {
+            width: 100%;
+            max-width: 600px;
+            box-sizing: border-box;
+        }
+
+        .article h1 {
+            font-size: 3em;
+            margin: 1.4em 0 0.6em;
+        }
+
+        .article h2 {
+            font-size: 2em;
+            margin: 1.4em 0 0.6em;
+        }
+
+        .article p {
+            line-height: 160%;
+            margin: 0 0 1em;
+        }
+
+        .article blockquote {
+            margin-left: 0;
+            margin-right: 0;
+            font-size: 2em;
+            padding-left: 1em;
+            border-left: 0.1em solid currentColor;
+        }
+
+        .article figure {
+            margin: 1em 0 2em;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .article figcaption {
+            max-width: 600px;
+            margin-top: 1em;
+            font-size: 0.8em;
+            color: color-mix(in srgb, var(--c-content) 60%, var(--c-bg));
+        }
+
+        .article a {
+            color: var(--c-action);
+            text-decoration-thickness: 0.05em;
+            text-underline-position: under;
+            text-decoration-color: color-mix(in srgb, currentColor, transparent 70%);
+            transition: color 160ms, text-decoration-color 160ms;
+        }
+
+        .article a:hover {
+            color: color-mix(in srgb, var(--c-action), var(--c-content) 40%);
+            text-decoration-color: color-mix(in srgb, currentColor, transparent 30%);
+        }
+
+        .article img {
+            display: block;
+            border-radius: 0.8em;
+            width: 100%;
+            max-width: 700px;
+            aspect-ratio: 5 / 3;
+            object-fit: cover;
+        }
+
+        .article .box {
+            padding: 1em 1.4em;
+            border-top: 4px solid color-mix(in srgb, var(--c-action) 50%, transparent);
+            border-radius: 0.8em;
+            background-color: color-mix(in srgb, var(--c-action) 8%, var(--c-bg));
+            transition: background 400ms cubic-bezier(1, 0.0, 0.4, 1);
+        }
+        /* Custom font style attempting to use Avenir Next Rounded with robust fallbacks */
+        .font-avenir-rounded {
+            /* Prioritize Avenir Next Rounded (if available on the client's system) */
+            /* Using Inter as the primary accessible fallback as per guidelines */
+            font-family: "Avenir Next Rounded", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            font-weight: 800; /* Ensure it is heavy/bold */
+        }
+
+        .focal-title {
+            border: none;
+            background: transparent;
+            box-shadow: none;
+            text-shadow: 0 6px 18px rgba(0, 0, 0, 0.65);
+            text-transform: lowercase;
+        }
+
+        .quote-panel {
+            padding: 0;
+        }
+
+        .quote-panel p {
+            margin: 0.35rem 0;
+        }
+        
+        /* Custom CSS to ensure the background image covers the entire viewport */
+        .full-screen-bg {
+            /* Updated to use provided local asset */
+            background-image: url('ChatGPT Image Nov 20, 2025, 12_40_17 PM.png');
+            
+            /* Center the image */
+            background-position: center center;
+            
+            /* Do not repeat the image */
+            background-repeat: no-repeat;
+            
+            /* Scale the image to be as large as possible without cropping, 
+               but still covering the whole container */
+            background-size: cover;
+            
+            /* Fixed background ensures the image stays put even if we scroll */
+            background-attachment: fixed;
+            
+            /* Ensure the div covers the full viewport height and width */
+            height: 100vh;
+            width: 100vw;
+            
+            /* Reset margins to prevent unwanted scrollbars */
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Custom button style for a sleek, dark aesthetic */
+       
+
+        .timer-container {
+            margin-top: 0;
+            padding: 2.5rem 3.5rem;
+            
+            
+            
+            
+           
+            text-align: center;
+            min-width: 360px;
+        }
+
+        .timer-label {
+            position: relative;
+            display: inline-block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: color-mix(in srgb, var(--c-light) 90%, transparent);
+            padding: 10px 24px;
+            margin: 0 auto 1.5rem;
+            border: none;
+            border-radius: 99em;
+            background-color: color-mix(in srgb, var(--c-glass) 12%, transparent);
+            backdrop-filter: blur(8px) saturate(var(--saturation));
+            -webkit-backdrop-filter: blur(8px) saturate(var(--saturation));
+            box-shadow:
+                inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 10%), transparent),
+                inset 1.8px 3px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 90%), transparent),
+                inset -2px -2px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 80%), transparent),
+                inset -3px -8px 1px -6px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 60%), transparent),
+                inset -0.3px -1px 4px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 12%), transparent),
+                inset -1.5px 2.5px 0px -2px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
+                inset 0px 3px 4px -2px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
+                inset 2px -6.5px 1px -4px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
+                0px 1px 5px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
+                0px 6px 16px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 8%), transparent);
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+            transition: all 400ms cubic-bezier(1, 0.0, 0.4, 1);
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .timer-digits {
+            font-family: "DM Sans", "SF Pro Rounded", "Avenir Next Rounded", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            font-size: clamp(4.2rem, 9vw, 5.6rem);
+            font-weight: 800;
+            letter-spacing: 0.2em;
+            color: var(--c-light);
+            text-shadow: 0 16px 42px rgba(0, 0, 0, 0.7);
+        }
+
+        .timer-controls {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 1.5rem auto 0;
+            padding: 8px 12px 10px;
+            border: none;
+            border-radius: 99em;
+            background-color: color-mix(in srgb, var(--c-glass) 12%, transparent);
+            backdrop-filter: blur(8px) saturate(var(--saturation));
+            -webkit-backdrop-filter: blur(8px) saturate(var(--saturation));
+            box-shadow:
+                inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 10%), transparent),
+                inset 1.8px 3px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 90%), transparent),
+                inset -2px -2px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 80%), transparent),
+                inset -3px -8px 1px -6px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 60%), transparent),
+                inset -0.3px -1px 4px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 12%), transparent),
+                inset -1.5px 2.5px 0px -2px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
+                inset 0px 3px 4px -2px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
+                inset 2px -6.5px 1px -4px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
+                0px 1px 5px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
+                0px 6px 16px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 8%), transparent);
+            max-width: fit-content;
+            transition: all 400ms cubic-bezier(1, 0.0, 0.4, 1);
+        }
+
+        .timer-control-btn {
+            position: relative;
+            background: transparent;
+            border: none;
+            border-radius: 99em;
+            color: var(--c-light);
+            padding: 8px 20px;
+            margin: 0;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: all 400ms cubic-bezier(1, 0.0, 0.4, 1);
+            backdrop-filter: blur(8px) saturate(var(--saturation));
+            -webkit-backdrop-filter: blur(8px) saturate(var(--saturation));
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .timer-control-btn:hover {
+            background: color-mix(in srgb, var(--c-light) 8%, transparent);
+        }
+
+        .timer-control-btn:active {
+            transform: translateY(1px);
+        }
+
+        .timer-control-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                135deg,
+                color-mix(in srgb, var(--c-light) 10%, transparent) 0%,
+                color-mix(in srgb, var(--c-glass) 15%, transparent) 100%
+            );
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .timer-control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow:
+                inset 0 1px 2px color-mix(in srgb, var(--c-light) 40%, transparent),
+                inset 0 -1px 3px color-mix(in srgb, var(--c-dark) 30%, transparent),
+                0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .timer-control-btn:hover::before {
+            opacity: 0.5;
+        }
+
+        .timer-control-btn:active {
+            transform: translateY(1px);
+            box-shadow:
+                inset 0 1px 3px color-mix(in srgb, var(--c-dark) 30%, transparent),
+                inset 0 -1px 1px color-mix(in srgb, var(--c-light) 20%, transparent),
+                0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .timer-control-btn:focus-visible {
+            outline: 2px solid color-mix(in srgb, var(--c-action) 60%, transparent);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body class="bg-black">
+    <!-- Main container that holds the background image -->
+    <!-- Added flex-col to ensure content stacks correctly on mobile while still centered -->
+    <div class="full-screen-bg relative flex flex-col justify-center items-center">
+        <!-- Theme Switcher -->
+        <form class="switcher" aria-label="Theme switcher">
+            <span class="switcher__legend">Theme</span>
+            <label class="switcher__option">
+                <input class="switcher__input" type="radio" name="theme" value="light" c-option="1" checked>
+                <span class="switcher__icon">Focus Mode</span>
+            </label>
+            <label class="switcher__option">
+                <input class="switcher__input" type="radio" name="theme" value="short" c-option="2">
+                <span class="switcher__icon">Short Break</span>
+            </label>
+            <label class="switcher__option">
+                <input class="switcher__input" type="radio" name="theme" value="long" c-option="3">
+                <span class="switcher__icon">Long Break</span>
+            </label>
+        </form>
+
+        <svg class="switcher__filter" aria-hidden="true" focusable="false">
+            <filter id="switcher">
+                <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" result="noise" />
+                <feComposite operator="in" in="noise" in2="SourceGraphic" result="texture" />
+                <feGaussianBlur stdDeviation="2" in="texture" />
+            </filter>
+        </svg>
+        
+        <!-- Heading: Focal (Top Left) -->
+        <h1 class="focal-title absolute top-0 left-0 p-4 text-white text-5xl font-avenir-rounded tracking-widest leading-none sm:p-6 sm:text-7xl lg:text-8xl transition duration-300">
+            focal
+        </h1>
+
+<!-- Centered Button Group -->
+        <!-- Removed mt-48 to fix centering issue -->
+      
+
+        <!-- Timer Section -->
+        <div class="timer-container">
+            <div id="timerLabel" class="timer-label">FOCUS MODE</div>
+            <div id="timerDisplay" class="timer-digits">25:00</div>
+            <div class="timer-controls">
+                <button id="timerToggle" class="timer-control-btn">Pause</button>
+                <button id="timerReset" class="timer-control-btn">Reset</button>
+                <button id="changeBg" class="timer-control-btn" title="Change background">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                        <polyline points="21 15 16 10 5 21"></polyline>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- Full Screen Background Image Container -->
+    <div class="bg-container">
+        <img src="ChatGPT Image Nov 20, 2025, 09_41_46 PM.png" class="bg-image active" alt="Background">
+        <img src="ChatGPT Image Nov 20, 2025, 09_45_20 PM.png" class="bg-image" alt="Background">
+        <img src="ChatGPT Image Nov 20, 2025, 10_08_05 PM.png" class="bg-image" alt="Background">
+        <img src="ChatGPT Image Nov 20, 2025, 10_14_02 PM.png" class="bg-image" alt="Background">
+        <img src="ChatGPT Image Nov 20, 2025, 10_17_40 PM.png" class="bg-image" alt="Background">
+        <img src="ChatGPT Image Nov 20, 2025, 10_21_04 PM.png" class="bg-image" alt="Background">
+        <img src="f.png" class="bg-image" alt="Background">
+        <img src="IMG_20251120_075255(1).png" class="bg-image" alt="Background">
+    </div>
+
+    <script>
+// Timer Logic
+        const timerConfig = {
+            focus: { label: 'Focus Mode', duration: 25 * 60 },
+            short: { label: 'Short Break', duration: 5 * 60 },
+            long:  { label: 'Long Break', duration: 15 * 60 }
+        };
+
+        let currentMode = 'focus';
+        let remainingSeconds = timerConfig[currentMode].duration;
+        let timerInterval = null;
+        let isRunning = true;
+
+        const timerLabelEl = document.getElementById('timerLabel');
+        const timerDisplayEl = document.getElementById('timerDisplay');
+        const timerToggleBtn = document.getElementById('timerToggle');
+        const timerResetBtn = document.getElementById('timerReset');
+        const changeBgBtn = document.getElementById('changeBg');
+        const switcher = document.querySelector('.switcher');
+        const bgContainer = document.getElementById('bgContainer');
+        const bgImages = document.querySelectorAll('.bg-image');
+        let currentBgIndex = 0;
+        let bgInterval;
+        
+        // Initialize background with first image
+        function initBackground() {
+            if (bgImages.length > 0) {
+                // Set first image as active
+                bgImages[0].classList.add('active');
+                // Clear any existing interval (disable auto-rotation)
+                if (bgInterval) {
+                    clearInterval(bgInterval);
+                    bgInterval = null;
+                }
+            }
+        }
+        
+        // Rotate background images to a random one
+        function rotateBackground() {
+            if (bgImages.length <= 1) return;
+            
+            // Find and fade out current active image
+            const currentImage = document.querySelector('.bg-image.active');
+            
+            // Get a random index different from the current one
+            let newIndex;
+            do {
+                newIndex = Math.floor(Math.random() * bgImages.length);
+            } while (bgImages[newIndex] === currentImage && bgImages.length > 1);
+            
+            const nextImage = bgImages[newIndex];
+            
+            // Fade out current and fade in next
+            if (currentImage) {
+                currentImage.classList.remove('active');
+            }
+            
+            // Small delay for smooth transition
+            setTimeout(() => {
+                nextImage.classList.add('active');
+                currentBgIndex = newIndex; // Update the current index
+            }, 50);
+        }
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
+            const secs = (seconds % 60).toString().padStart(2, '0');
+            return `${mins}:${secs}`;
+        }
+
+        function updateTimerUI() {
+            timerLabelEl.textContent = timerConfig[currentMode].label.toUpperCase();
+            timerDisplayEl.textContent = formatTime(remainingSeconds);
+            timerToggleBtn.textContent = isRunning ? 'Pause' : 'Resume';
+        }
+
+        function tick() {
+            if (remainingSeconds <= 0) {
+                // When timer reaches zero, switch to next mode
+                if (currentMode === 'focus') {
+                    // After focus, go to short break
+                    setMode('short');
+                    // Play a sound or show notification (optional)
+                    new Audio('https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3').play();
+                } else if (currentMode === 'short' || currentMode === 'long') {
+                    // After any break, go back to focus
+                    setMode('focus');
+                    // Play a sound or show notification (optional)
+                    new Audio('https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3').play();
+                }
+                return;
+            }
+            remainingSeconds -= 1;
+            updateTimerUI();
+        }
+
+        function startTimerLoop() {
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(tick, 1000);
+        }
+
+        function setMode(modeKey) {
+            // Clear any existing timer interval
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            
+            currentMode = modeKey;
+            remainingSeconds = timerConfig[currentMode].duration;
+            isRunning = true;
+            updateTimerUI();
+            startTimerLoop();
+            
+            // Update the active theme radio button
+            document.querySelector(`input[name="theme"][value="${modeKey}"]`).checked = true;
+        }
+
+        document.querySelectorAll('.focus-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const modeKey = btn.getAttribute('data-mode');
+                setMode(modeKey);
+            });
+        });
+
+        timerToggleBtn.addEventListener('click', () => {
+            if (timerToggleBtn.textContent === 'Done') {
+                setMode(currentMode);
+                return;
+            }
+
+            if (isRunning) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                isRunning = false;
+            } else {
+                isRunning = true;
+                startTimerLoop();
+            }
+            updateTimerUI();
+        });
+
+        timerResetBtn.addEventListener('click', () => {
+            remainingSeconds = timerConfig[currentMode].duration;
+            isRunning = true;
+            updateTimerUI();
+            startTimerLoop();
+        });
+
+        const trackPrevious = (el) => {
+            if (!el) return;
+            const radios = el.querySelectorAll('input[type="radio"]');
+            let previousValue = null;
+            const initiallyChecked = el.querySelector('input[type="radio"]:checked');
+            if (initiallyChecked) {
+                previousValue = initiallyChecked.value;
+            }
+            
+            radios.forEach(radio => {
+                radio.addEventListener('click', function() {
+                    if (this.value === previousValue) {
+                        this.checked = false;
+                        previousValue = null;
+                    } else {
+                        previousValue = this.value;
+                    }
+                });
+            });
+        };
+
+        // Theme switcher event listeners
+        document.querySelectorAll('.switcher__input').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                if (e.target.value === 'light') {
+                    setMode('focus');
+                } else if (e.target.value === 'short') {
+                    setMode('short');
+                } else if (e.target.value === 'long') {
+                    setMode('long');
+                }
+            });
+        });
+        
+        // Add click event for the change background button
+        if (changeBgBtn) {
+            changeBgBtn.addEventListener('click', (e) => {
+                e.preventDefault(); // Prevent any default button behavior
+                rotateBackground();
+            });
+        }
+
+        // Initialize everything when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM fully loaded');
+            
+            // Initialize background first
+            console.log('Number of background images found:', bgImages.length);
+            if (bgImages.length > 0) {
+                console.log('Initializing background images');
+                // Remove active class from all images first
+                bgImages.forEach(img => {
+                    img.classList.remove('active');
+                });
+                // Set first image as active
+                bgImages[0].classList.add('active');
+                console.log('Background image initialized - auto-rotation is disabled');
+            }
+            
+            // Then initialize timer
+            setMode('focus');
+            updateTimerUI();
+            startTimerLoop();
+        });
+        
+    </script>
+    
+    <!-- Watermark -->
+    <div style="position: fixed; bottom: 20px; right: 20px; color: rgba(255, 255, 255, 0.4); font-size: 0.9rem; font-weight: 300; letter-spacing: 0.5px; font-family: 'DM Sans', sans-serif;">
+        by Keshv
+    </div>
+</body>
+</html>
