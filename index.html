@@ -616,91 +616,202 @@
             transform: scale(0.95);
         }
 
-        .alarm-modal {
+        .alarm-toggle {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            z-index: 100;
-            align-items: center;
-            justify-content: center;
+            left: 20px;
+            bottom: 200px;
+            z-index: 14;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 400ms ease, visibility 400ms ease;
+            transform: translateY(20px) scale(0.9);
+            transition: all 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
-        .alarm-modal.active {
-            display: flex;
+        .alarm-toggle.active {
             opacity: 1;
             visibility: visible;
+            transform: translateY(0) scale(1);
         }
 
-        .alarm-modal.closing {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .alarm-modal-content {
+        .alarm-toggle-content {
             background: linear-gradient(135deg, 
-                color-mix(in srgb, var(--c-glass) 25%, transparent) 0%,
-                color-mix(in srgb, var(--c-glass) 12%, transparent) 100%);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border-radius: 2rem;
-            padding: 2.5rem;
-            max-width: 420px;
-            width: 90%;
-            border: 1.5px solid color-mix(in srgb, var(--c-light) 20%, transparent);
+                color-mix(in srgb, var(--c-glass) 20%, transparent) 0%,
+                color-mix(in srgb, var(--c-glass) 12%, transparent) 50%,
+                color-mix(in srgb, var(--c-glass) 6%, transparent) 100%);
+            backdrop-filter: blur(50px) saturate(250%) brightness(1.2) contrast(1.1);
+            -webkit-backdrop-filter: blur(50px) saturate(250%) brightness(1.2) contrast(1.1);
+            border-radius: 1.5rem;
+            padding: 1.2rem;
+            min-width: 280px;
+            max-width: 320px;
+            max-height: 400px;
+            border: 1px solid color-mix(in srgb, var(--c-light) 15%, transparent);
             box-shadow:
-                inset 0 0 0 1px color-mix(in srgb, var(--c-light) 15%, transparent),
-                inset -1px -1px 20px color-mix(in srgb, var(--c-light) 5%, transparent),
-                0px 8px 32px 0px rgba(0, 0, 0, 0.2),
-                0px 20px 60px rgba(0, 0, 0, 0.3);
+                inset 0 0 0 0.5px color-mix(in srgb, var(--c-light) 25%, transparent),
+                inset 1px 1px 8px color-mix(in srgb, var(--c-light) 15%, transparent),
+                inset -1px -1px 10px color-mix(in srgb, var(--c-light) 8%, transparent),
+                inset -0.5px -0.5px 18px color-mix(in srgb, var(--c-light) 10%, transparent),
+                0px 12px 32px 0px rgba(0, 0, 0, 0.1),
+                0px 24px 60px rgba(0, 0, 0, 0.12);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
         }
 
-        .alarm-modal.active .alarm-modal-content {
-            animation: popIn 500ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        .alarm-toggle-header {
+            color: var(--c-light);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            text-align: center;
+            letter-spacing: 0.05em;
         }
 
-        .alarm-modal.closing .alarm-modal-content {
-            animation: popOut 400ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        .alarm-setting {
+            margin-bottom: 0.8rem;
         }
 
-        @keyframes popIn {
-            from {
-                opacity: 0;
-                transform: scale(0.7) translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
+        .alarm-setting label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--c-light);
+            font-size: 0.85rem;
+            font-weight: 500;
         }
 
-        @keyframes popOut {
-            from {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
-            to {
-                opacity: 0;
-                transform: scale(0.7) translateY(20px);
-            }
+        .alarm-number-input,
+        .alarm-time-input-12h,
+        .alarm-period-select,
+        .alarm-sound-select {
+            background: linear-gradient(135deg, 
+                color-mix(in srgb, var(--c-glass) 12%, transparent) 0%,
+                color-mix(in srgb, var(--c-glass) 6%, transparent) 100%);
+            backdrop-filter: blur(25px) saturate(220%) brightness(1.15);
+            -webkit-backdrop-filter: blur(25px) saturate(220%) brightness(1.15);
+            border: 1px solid color-mix(in srgb, var(--c-light) 15%, transparent);
+            border-radius: 0.5rem;
+            padding: 0.4rem 0.6rem;
+            color: var(--c-light);
+            font-size: 0.8rem;
+            transition: all 200ms ease;
+            box-shadow:
+                inset 0 0 0 0.5px color-mix(in srgb, var(--c-light) 18%, transparent),
+                inset 1px 1px 4px color-mix(in srgb, var(--c-light) 10%, transparent);
         }
 
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .alarm-number-input:focus,
+        .alarm-time-input-12h:focus,
+        .alarm-period-select:focus,
+        .alarm-sound-select:focus {
+            outline: none;
+            border-color: color-mix(in srgb, var(--c-light) 20%, transparent);
+            background: linear-gradient(135deg, 
+                color-mix(in srgb, var(--c-glass) 15%, transparent) 0%,
+                color-mix(in srgb, var(--c-glass) 8%, transparent) 100%);
+        }
+
+        .alarm-time-container {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .alarm-time-input-12h {
+            width: 50px;
+            text-align: center;
+        }
+
+        .alarm-time-separator {
+            color: var(--c-light);
+            font-weight: 600;
+        }
+
+        .alarm-period-select {
+            width: 60px;
+        }
+
+        .alarm-sound-select {
+            width: 100%;
+            margin-top: 0.3rem;
+        }
+
+        .alarm-enable-switch {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            background: color-mix(in srgb, var(--c-glass) 20%, transparent);
+            border: 1px solid color-mix(in srgb, var(--c-light) 15%, transparent);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 200ms ease;
+        }
+
+        .alarm-enable-switch.active {
+            background: var(--c-action);
+            border-color: var(--c-action);
+        }
+
+        .alarm-enable-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 18px;
+            height: 18px;
+            background: var(--c-light);
+            border-radius: 50%;
+            transition: transform 200ms ease;
+        }
+
+        .alarm-enable-switch.active::after {
+            transform: translateX(20px);
+        }
+
+        .alarm-status {
+            color: color-mix(in srgb, var(--c-light) 80%, transparent);
+            font-size: 0.75rem;
+            text-align: center;
+            margin-top: 0.5rem;
+            padding: 0.4rem;
+            background: color-mix(in srgb, var(--c-glass) 10%, transparent);
+            border-radius: 0.5rem;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .alarm-toggle-footer {
+            padding-top: 0.8rem;
+            border-top: 1px solid color-mix(in srgb, var(--c-light) 10%, transparent);
+            margin-top: auto;
+        }
+
+        .alarm-save-btn {
+            width: 100%;
+            padding: 0.5rem 1rem;
+            border: 1px solid color-mix(in srgb, var(--c-action) 18%, transparent);
+            border-radius: 0.5rem;
+            background: linear-gradient(135deg, 
+                color-mix(in srgb, var(--c-action) 15%, transparent) 0%,
+                color-mix(in srgb, var(--c-action) 8%, transparent) 100%);
+            backdrop-filter: blur(25px) saturate(220%) brightness(1.15);
+            -webkit-backdrop-filter: blur(25px) saturate(220%) brightness(1.15);
+            color: var(--c-light);
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 200ms ease;
+            box-shadow:
+                inset 0 0 0 0.5px color-mix(in srgb, var(--c-action) 20%, transparent),
+                inset 1px 1px 4px color-mix(in srgb, var(--c-action) 12%, transparent);
+        }
+
+        .alarm-save-btn:hover {
+            background: linear-gradient(135deg, 
+                color-mix(in srgb, var(--c-action) 20%, transparent) 0%,
+                color-mix(in srgb, var(--c-action) 12%, transparent) 100%);
+            border-color: color-mix(in srgb, var(--c-action) 25%, transparent);
+            transform: translateY(-1px);
         }
 
         .alarm-modal-header {
@@ -1126,6 +1237,7 @@
             display: flex;
             gap: 0.4rem;
             margin-bottom: 0.8rem;
+            align-items: stretch;
         }
 
         .todo-input {
@@ -1185,7 +1297,7 @@
                 color-mix(in srgb, var(--c-action) 20%, transparent) 0%,
                 color-mix(in srgb, var(--c-action) 12%, transparent) 100%);
             border-color: color-mix(in srgb, var(--c-action) 25%, transparent);
-            transform: translateY(-2px);
+            transform: scale(1.05);
             box-shadow:
                 inset 0 0 0 0.5px color-mix(in srgb, var(--c-action) 25%, transparent),
                 inset 1px 1px 6px color-mix(in srgb, var(--c-action) 15%, transparent);
@@ -1564,6 +1676,12 @@
                 right: 10px;
                 bottom: 80px;
                 z-index: 15;
+            }
+
+            .alarm-toggle {
+                left: 10px;
+                bottom: 80px;
+                z-index: 14;
             }
 
             .music-services-content {
@@ -1962,6 +2080,88 @@
                 font-size: 1.2rem;
             }
         }
+
+        /* Custom scrollbar styles */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: color-mix(in srgb, var(--c-glass) 15%, transparent);
+            border-radius: 5px;
+            border: 1px solid color-mix(in srgb, var(--c-light) 8%, transparent);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, 
+                color-mix(in srgb, var(--c-light) 25%, transparent) 0%,
+                color-mix(in srgb, var(--c-light) 18%, transparent) 100%);
+            border-radius: 5px;
+            border: 1px solid color-mix(in srgb, var(--c-light) 12%, transparent);
+            transition: all 200ms ease;
+            box-shadow:
+                inset 0 0 0 0.5px color-mix(in srgb, var(--c-light) 15%, transparent),
+                inset 1px 1px 2px color-mix(in srgb, var(--c-light) 8%, transparent);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, 
+                color-mix(in srgb, var(--c-light) 35%, transparent) 0%,
+                color-mix(in srgb, var(--c-light) 25%, transparent) 100%);
+            border-color: color-mix(in srgb, var(--c-light) 18%, transparent);
+            box-shadow:
+                inset 0 0 0 0.5px color-mix(in srgb, var(--c-light) 20%, transparent),
+                inset 1px 1px 3px color-mix(in srgb, var(--c-light) 12%, transparent);
+        }
+
+        ::-webkit-scrollbar-thumb:active {
+            background: linear-gradient(135deg, 
+                color-mix(in srgb, var(--c-light) 30%, transparent) 0%,
+                color-mix(in srgb, var(--c-light) 22%, transparent) 100%);
+        }
+
+        ::-webkit-scrollbar-corner {
+            background: color-mix(in srgb, var(--c-glass) 12%, transparent);
+            border: 1px solid color-mix(in srgb, var(--c-light) 8%, transparent);
+        }
+
+        /* Firefox scrollbar styles */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: 
+                color-mix(in srgb, var(--c-light) 25%, transparent) 
+                color-mix(in srgb, var(--c-glass) 15%, transparent);
+        }
+
+        /* Ensure scrollbars are always visible */
+        html, body {
+            overflow: auto !important;
+        }
+
+        /* Force scrollbar visibility for scrollable elements */
+        .todo-list-container {
+            overflow-y: scroll !important;
+        }
+
+        .alarm-toggle-content {
+            overflow-y: scroll !important;
+        }
+
+        /* Make sure scrollbars appear even on short content */
+        .todo-list-container::-webkit-scrollbar {
+            display: block !important;
+        }
+
+        /* Hidden scrollbar for alarm toggle */
+        .alarm-toggle-content {
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* Internet Explorer 10+ */
+        }
+
+        .alarm-toggle-content::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
     </style>
 </head>
 <body class="bg-black">
@@ -2142,35 +2342,35 @@
         </svg>
     </button>
 
-    <!-- Alarm Modal -->
-    <div id="alarmModal" class="alarm-modal">
-        <div class="alarm-modal-content">
-            <div class="alarm-modal-header">Alarm Settings</div>
+    <!-- Alarm Toggle -->
+    <div id="alarmToggle" class="alarm-toggle">
+        <div class="alarm-toggle-content">
+            <div class="alarm-toggle-header">Alarm Settings</div>
             
             <div class="alarm-setting">
                 <label>
                     <span>Enable Alarm</span>
-                    <button id="alarmToggle" class="alarm-toggle-switch"></button>
+                    <button id="alarmEnableToggle" class="alarm-enable-switch"></button>
                 </label>
             </div>
 
             <div class="alarm-setting">
-                <label for="focusDuration">Focus Mode Duration (minutes):</label>
+                <label for="focusDuration">Focus (min):</label>
                 <input type="number" id="focusDuration" class="alarm-number-input" min="1" max="120" value="25">
             </div>
 
             <div class="alarm-setting">
-                <label for="shortBreakDuration">Short Break Duration (minutes):</label>
+                <label for="shortBreakDuration">Short Break (min):</label>
                 <input type="number" id="shortBreakDuration" class="alarm-number-input" min="1" max="60" value="5">
             </div>
 
             <div class="alarm-setting">
-                <label for="longBreakDuration">Long Break Duration (minutes):</label>
+                <label for="longBreakDuration">Long Break (min):</label>
                 <input type="number" id="longBreakDuration" class="alarm-number-input" min="1" max="120" value="15">
             </div>
 
             <div class="alarm-setting">
-                <label for="alarmHours">Set Alarm Time:</label>
+                <label for="alarmHours">Alarm Time:</label>
                 <div class="alarm-time-container">
                     <input type="number" id="alarmHours" class="alarm-time-input-12h" min="1" max="12" placeholder="HH">
                     <span class="alarm-time-separator">:</span>
@@ -2183,7 +2383,7 @@
             </div>
 
             <div class="alarm-setting">
-                <label for="alarmSound">Alarm Sound:</label>
+                <label for="alarmSound">Sound:</label>
                 <select id="alarmSound" class="alarm-sound-select">
                     <option value="beep">Beep</option>
                     <option value="chime">Chime</option>
@@ -2194,9 +2394,8 @@
 
             <div id="alarmStatus" class="alarm-status"></div>
 
-            <div class="alarm-modal-footer">
-                <button id="closeAlarmModal" class="alarm-modal-btn close-btn">Close</button>
-                <button id="saveAlarmSettings" class="alarm-modal-btn save-btn">Save</button>
+            <div class="alarm-toggle-footer">
+                <button id="saveAlarmSettings" class="alarm-save-btn">Save</button>
             </div>
         </div>
     </div>
@@ -2263,8 +2462,7 @@
 
         // Alarm variables
         const alarmBtn = document.getElementById('alarmBtn');
-        const alarmModal = document.getElementById('alarmModal');
-        const alarmToggle = document.getElementById('alarmToggle');
+        const alarmEnableToggle = document.getElementById('alarmEnableToggle');
         const alarmSound = document.getElementById('alarmSound');
         const alarmHours = document.getElementById('alarmHours');
         const alarmMinutes = document.getElementById('alarmMinutes');
@@ -2273,7 +2471,6 @@
         const focusDuration = document.getElementById('focusDuration');
         const shortBreakDuration = document.getElementById('shortBreakDuration');
         const longBreakDuration = document.getElementById('longBreakDuration');
-        const closeAlarmModal = document.getElementById('closeAlarmModal');
         const saveAlarmSettings = document.getElementById('saveAlarmSettings');
         
         let alarmEnabled = false;
@@ -2514,30 +2711,33 @@
         }
 
         // Alarm functionality
-        function openAlarmModal() {
-            alarmModal.classList.add('active');
-            // Update modal state to reflect current settings
-            alarmToggle.classList.toggle('active', alarmEnabled);
-            alarmSound.value = selectedAlarmSound;
-            if (alarmSetTime) {
-                const time12 = convertTo12Hour(alarmSetTime);
-                alarmHours.value = time12.hours;
-                alarmMinutes.value = String(time12.minutes).padStart(2, '0');
-                alarmPeriod.value = time12.period;
+        function toggleAlarmSettings() {
+            const alarmToggle = document.getElementById('alarmToggle');
+            const isActive = alarmToggle.classList.contains('active');
+            
+            if (isActive) {
+                alarmToggle.classList.remove('active');
+            } else {
+                // Close other toggles first
+                document.getElementById('todoFloating').classList.remove('active');
+                document.getElementById('musicServices').classList.remove('active');
+                
+                alarmToggle.classList.add('active');
+                // Update toggle state to reflect current settings
+                alarmEnableToggle.classList.toggle('active', alarmEnabled);
+                alarmSound.value = selectedAlarmSound;
+                if (alarmSetTime) {
+                    const time12 = convertTo12Hour(alarmSetTime);
+                    alarmHours.value = time12.hours;
+                    alarmMinutes.value = String(time12.minutes).padStart(2, '0');
+                    alarmPeriod.value = time12.period;
+                }
+                // Update duration inputs
+                focusDuration.value = timerConfig.focus.duration / 60;
+                shortBreakDuration.value = timerConfig.short.duration / 60;
+                longBreakDuration.value = timerConfig.long.duration / 60;
+                updateAlarmStatus();
             }
-            // Update duration inputs
-            focusDuration.value = timerConfig.focus.duration / 60;
-            shortBreakDuration.value = timerConfig.short.duration / 60;
-            longBreakDuration.value = timerConfig.long.duration / 60;
-            updateAlarmStatus();
-        }
-
-        function closeAlarmModalFn() {
-            alarmModal.classList.add('closing');
-            setTimeout(() => {
-                alarmModal.classList.remove('active');
-                alarmModal.classList.remove('closing');
-            }, 400);
         }
 
         function updateAlarmStatus() {
@@ -2742,20 +2942,10 @@
         });
 
         // Alarm button click
-        alarmBtn.addEventListener('click', openAlarmModal);
+        alarmBtn.addEventListener('click', toggleAlarmSettings);
 
-        // Close modal button
-        closeAlarmModal.addEventListener('click', closeAlarmModalFn);
-
-        // Close modal when clicking outside
-        alarmModal.addEventListener('click', (e) => {
-            if (e.target === alarmModal) {
-                closeAlarmModalFn();
-            }
-        });
-
-        // Toggle alarm switch
-        alarmToggle.addEventListener('click', () => {
+        // Toggle alarm enable switch
+        alarmEnableToggle.addEventListener('click', () => {
             alarmEnabled = !alarmEnabled;
             alarmToggle.classList.toggle('active', alarmEnabled);
         });
@@ -2801,7 +2991,7 @@
                 stopAlarmCheck();
             }
             
-            closeAlarmModalFn();
+            document.getElementById('alarmToggle').classList.remove('active');
         });
 
         // Load alarm settings from localStorage
