@@ -158,7 +158,7 @@
             box-sizing: border-box;
             border-radius: 99em;
             opacity: 1;
-            transition: all 160ms;
+            transition: all 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
             color: white;
             gap: 4px;
         }
@@ -167,7 +167,7 @@
             display: block;
             width: 100%;
             text-align: center;
-            transition: scale 200ms cubic-bezier(0.5, 0, 0, 1);
+            transition: scale 300ms cubic-bezier(0.34, 1.56, 0.64, 1), transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
             font-size: 0.8rem;
             letter-spacing: 0.08em;
         }
@@ -209,26 +209,26 @@
                 inset -1px 2px 3px -1px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
                 inset 0px -4px 1px -2px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
                 0px 3px 6px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 8%), transparent);
-            transition: background-color 400ms cubic-bezier(1, 0.0, 0.4, 1),
-                        box-shadow 400ms cubic-bezier(1, 0.0, 0.4, 1),
-                        translate 400ms cubic-bezier(1, 0.0, 0.4, 1);
+            transition: background-color 500ms cubic-bezier(0.34, 1.56, 0.64, 1),
+                        box-shadow 500ms cubic-bezier(0.34, 1.56, 0.64, 1),
+                        translate 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .switcher:has(input[c-option="1"]:checked)::after {
             translate: 0 0;
             transform-origin: right;
-            animation: scaleToggle 440ms ease;
+            animation: slideToggle1 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .switcher:has(input[c-option="2"]:checked)::after {
             translate: 76px 0;
-            animation: scaleToggle2 440ms ease;
+            animation: slideToggle2 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .switcher:has(input[c-option="3"]:checked)::after {
             translate: 152px 0;
             transform-origin: left;
-            animation: scaleToggle3 440ms ease;
+            animation: slideToggle3 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .switcher[c-previous="1"]:has(input[c-option="2"]:checked)::after {
@@ -239,22 +239,49 @@
             transform-origin: right;
         }
 
-        @keyframes scaleToggle {
-            0% { scale: 1 1; }
-            50% { scale: 1.1 1; }
-            100% { scale: 1 1; }
+        @keyframes slideToggle1 {
+            0% { 
+                scale: 1 1;
+                filter: brightness(0.9);
+            }
+            50% { 
+                scale: 1.05 1;
+                filter: brightness(1.1);
+            }
+            100% { 
+                scale: 1 1;
+                filter: brightness(1);
+            }
         }
 
-        @keyframes scaleToggle2 {
-            0% { scale: 1 1; }
-            50% { scale: 1.2 1; }
-            100% { scale: 1 1; }
+        @keyframes slideToggle2 {
+            0% { 
+                scale: 1 1;
+                filter: brightness(0.9);
+            }
+            50% { 
+                scale: 1.1 1;
+                filter: brightness(1.15);
+            }
+            100% { 
+                scale: 1 1;
+                filter: brightness(1);
+            }
         }
 
-        @keyframes scaleToggle3 {
-            0% { scale: 1 1; }
-            50% { scale: 1.1 1; }
-            100% { scale: 1 1; }
+        @keyframes slideToggle3 {
+            0% { 
+                scale: 1 1;
+                filter: brightness(0.9);
+            }
+            50% { 
+                scale: 1.05 1;
+                filter: brightness(1.1);
+            }
+            100% { 
+                scale: 1 1;
+                filter: brightness(1);
+            }
         }
 
         .article {
@@ -474,29 +501,28 @@
 
         .timer-control-btn {
             position: relative;
-            background: transparent;
-            border: none;
+            background: linear-gradient(135deg, 
+                color-mix(in srgb, var(--c-glass) 15%, transparent) 0%,
+                color-mix(in srgb, var(--c-glass) 8%, transparent) 100%);
+            border: 1.5px solid color-mix(in srgb, var(--c-light) 15%, transparent);
             border-radius: 99em;
             color: var(--c-light);
-            padding: 8px 20px;
+            padding: 10px 24px;
             margin: 0;
             cursor: pointer;
             font-size: 0.9rem;
-            font-weight: 500;
+            font-weight: 600;
             letter-spacing: 0.5px;
-            transition: all 400ms cubic-bezier(1, 0.0, 0.4, 1);
-            backdrop-filter: blur(8px) saturate(var(--saturation));
-            -webkit-backdrop-filter: blur(8px) saturate(var(--saturation));
+            transition: all 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+            backdrop-filter: blur(12px) saturate(180%);
+            -webkit-backdrop-filter: blur(12px) saturate(180%);
             overflow: hidden;
             z-index: 1;
-        }
-
-        .timer-control-btn:hover {
-            background: color-mix(in srgb, var(--c-light) 8%, transparent);
-        }
-
-        .timer-control-btn:active {
-            transform: translateY(1px);
+            box-shadow:
+                inset 0 0 0 1px color-mix(in srgb, var(--c-light) 10%, transparent),
+                inset 1px 1px 3px color-mix(in srgb, var(--c-light) 8%, transparent),
+                inset -1px -1px 3px color-mix(in srgb, var(--c-light) 4%, transparent),
+                0px 4px 12px rgba(0, 0, 0, 0.15);
         }
 
         .timer-control-btn::before {
@@ -508,37 +534,1433 @@
             bottom: 0;
             background: linear-gradient(
                 135deg,
-                color-mix(in srgb, var(--c-light) 10%, transparent) 0%,
-                color-mix(in srgb, var(--c-glass) 15%, transparent) 100%
+                color-mix(in srgb, var(--c-light) 20%, transparent) 0%,
+                color-mix(in srgb, var(--c-glass) 25%, transparent) 100%
             );
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
             z-index: -1;
+            border-radius: 99em;
         }
 
         .timer-control-btn:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px) scale(1.05);
+            background: linear-gradient(135deg, 
+                color-mix(in srgb, var(--c-glass) 20%, transparent) 0%,
+                color-mix(in srgb, var(--c-glass) 12%, transparent) 100%);
+            border-color: color-mix(in srgb, var(--c-light) 25%, transparent);
             box-shadow:
-                inset 0 1px 2px color-mix(in srgb, var(--c-light) 40%, transparent),
-                inset 0 -1px 3px color-mix(in srgb, var(--c-dark) 30%, transparent),
-                0 6px 20px rgba(0, 0, 0, 0.2);
+                inset 0 0 0 1px color-mix(in srgb, var(--c-light) 20%, transparent),
+                inset 2px 2px 6px color-mix(in srgb, var(--c-light) 15%, transparent),
+                inset -2px -2px 6px color-mix(in srgb, var(--c-light) 8%, transparent),
+                0px 8px 24px rgba(0, 0, 0, 0.2),
+                0px 16px 32px rgba(0, 0, 0, 0.15);
         }
 
         .timer-control-btn:hover::before {
-            opacity: 0.5;
+            opacity: 0.6;
         }
 
         .timer-control-btn:active {
-            transform: translateY(1px);
+            transform: translateY(-1px) scale(1.02);
+            background: linear-gradient(135deg, 
+                color-mix(in srgb, var(--c-glass) 25%, transparent) 0%,
+                color-mix(in srgb, var(--c-glass) 15%, transparent) 100%);
+            border-color: color-mix(in srgb, var(--c-light) 30%, transparent);
             box-shadow:
-                inset 0 1px 3px color-mix(in srgb, var(--c-dark) 30%, transparent),
-                inset 0 -1px 1px color-mix(in srgb, var(--c-light) 20%, transparent),
-                0 2px 8px rgba(0, 0, 0, 0.1);
+                inset 0 0 0 1px color-mix(in srgb, var(--c-light) 25%, transparent),
+                inset 1px 1px 4px color-mix(in srgb, var(--c-light) 20%, transparent),
+                inset -1px -1px 4px color-mix(in srgb, var(--c-light) 10%, transparent),
+                0px 4px 16px rgba(0, 0, 0, 0.18),
+                0px 8px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .timer-control-btn:active::before {
+            opacity: 0.8;
         }
 
         .timer-control-btn:focus-visible {
             outline: 2px solid color-mix(in srgb, var(--c-action) 60%, transparent);
             outline-offset: 2px;
+        }
+
+        .alarm-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 10;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            background-color: color-mix(in srgb, var(--c-glass) 12%, transparent);
+            backdrop-filter: blur(8px) saturate(var(--saturation));
+            -webkit-backdrop-filter: blur(8px) saturate(var(--saturation));
+            color: var(--c-light);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 300ms ease;
+            box-shadow:
+                inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 10%), transparent),
+                0px 1px 5px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent);
+        }
+
+        .alarm-btn:hover {
+            transform: scale(1.1);
+            background-color: color-mix(in srgb, var(--c-glass) 18%, transparent);
+        }
+
+        .alarm-btn:active {
+            transform: scale(0.95);
+        }
+
+        .alarm-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 400ms ease, visibility 400ms ease;
+        }
+
+        .alarm-modal.active {
+            display: flex;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .alarm-modal.closing {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .alarm-modal-content {
+            background: linear-gradient(135deg, 
+                color-mix(in srgb, var(--c-glass) 25%, transparent) 0%,
+                color-mix(in srgb, var(--c-glass) 12%, transparent) 100%);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 2rem;
+            padding: 2.5rem;
+            max-width: 420px;
+            width: 90%;
+            border: 1.5px solid color-mix(in srgb, var(--c-light) 20%, transparent);
+            box-shadow:
+                inset 0 0 0 1px color-mix(in srgb, var(--c-light) 15%, transparent),
+                inset -1px -1px 20px color-mix(in srgb, var(--c-light) 5%, transparent),
+                0px 8px 32px 0px rgba(0, 0, 0, 0.2),
+                0px 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .alarm-modal.active .alarm-modal-content {
+            animation: popIn 500ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        .alarm-modal.closing .alarm-modal-content {
+            animation: popOut 400ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: scale(0.7) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        @keyframes popOut {
+            from {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: scale(0.7) translateY(20px);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alarm-modal-header {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--c-light);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .alarm-setting {
+            margin-bottom: 1.5rem;
+        }
+
+        .alarm-setting label {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--c-light);
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        .alarm-toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 28px;
+            background-color: color-mix(in srgb, var(--c-content) 30%, transparent);
+            border-radius: 99em;
+            border: none;
+            cursor: pointer;
+            transition: background-color 300ms ease;
+        }
+
+        .alarm-toggle-switch.active {
+            background-color: var(--c-action);
+        }
+
+        .alarm-toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background-color: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: left 300ms ease;
+        }
+
+        .alarm-toggle-switch.active::after {
+            left: 24px;
+        }
+
+        .alarm-sound-select {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            border: 1.5px solid color-mix(in srgb, var(--c-light) 15%, transparent);
+            background-color: color-mix(in srgb, var(--c-glass) 12%, transparent);
+            color: var(--c-light);
+            font-size: 0.9rem;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 300ms ease;
+        }
+
+        .alarm-sound-select:hover {
+            border-color: color-mix(in srgb, var(--c-light) 25%, transparent);
+            background-color: color-mix(in srgb, var(--c-glass) 16%, transparent);
+        }
+
+        .alarm-sound-select:focus {
+            outline: none;
+            border-color: var(--c-action);
+            background-color: color-mix(in srgb, var(--c-glass) 18%, transparent);
+            box-shadow: 0 0 12px color-mix(in srgb, var(--c-action) 30%, transparent);
+        }
+
+        .alarm-sound-select option {
+            background-color: var(--c-bg);
+            color: var(--c-content);
+        }
+
+        .alarm-time-input {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            border: 1px solid color-mix(in srgb, var(--c-light) 20%, transparent);
+            background-color: color-mix(in srgb, var(--c-glass) 8%, transparent);
+            color: var(--c-light);
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        .alarm-time-input::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            cursor: pointer;
+        }
+
+        .alarm-time-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .alarm-time-input-12h {
+            flex: 1;
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            border: 1.5px solid color-mix(in srgb, var(--c-light) 15%, transparent);
+            background-color: color-mix(in srgb, var(--c-glass) 12%, transparent);
+            color: var(--c-light);
+            font-size: 0.95rem;
+            font-weight: 500;
+            text-align: center;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 300ms ease;
+        }
+
+        .alarm-time-input-12h:focus {
+            outline: none;
+            border-color: var(--c-action);
+            background-color: color-mix(in srgb, var(--c-glass) 18%, transparent);
+            box-shadow: 0 0 12px color-mix(in srgb, var(--c-action) 30%, transparent);
+        }
+
+        .alarm-time-input-12h::-webkit-outer-spin-button,
+        .alarm-time-input-12h::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .alarm-time-input-12h[type=number] {
+            -moz-appearance: textfield;
+            appearance: textfield;
+        }
+
+        .alarm-time-separator {
+            color: var(--c-light);
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .alarm-period-select {
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            border: 1.5px solid color-mix(in srgb, var(--c-light) 15%, transparent);
+            background-color: color-mix(in srgb, var(--c-glass) 12%, transparent);
+            color: var(--c-light);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            min-width: 70px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 300ms ease;
+        }
+
+        .alarm-period-select:hover {
+            border-color: color-mix(in srgb, var(--c-light) 25%, transparent);
+            background-color: color-mix(in srgb, var(--c-glass) 16%, transparent);
+        }
+
+        .alarm-period-select:focus {
+            outline: none;
+            border-color: var(--c-action);
+            background-color: color-mix(in srgb, var(--c-glass) 18%, transparent);
+            box-shadow: 0 0 12px color-mix(in srgb, var(--c-action) 30%, transparent);
+        }
+
+        .alarm-period-select option {
+            background-color: var(--c-bg);
+            color: var(--c-content);
+        }
+
+        .alarm-number-input {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            border: 1.5px solid color-mix(in srgb, var(--c-light) 15%, transparent);
+            background-color: color-mix(in srgb, var(--c-glass) 12%, transparent);
+            color: var(--c-light);
+            font-size: 0.95rem;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 300ms ease;
+        }
+
+        .alarm-number-input:focus {
+            outline: none;
+            border-color: var(--c-action);
+            background-color: color-mix(in srgb, var(--c-glass) 18%, transparent);
+            box-shadow: 0 0 12px color-mix(in srgb, var(--c-action) 30%, transparent);
+        }
+
+        .alarm-number-input::-webkit-outer-spin-button,
+        .alarm-number-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .alarm-number-input[type=number] {
+            -moz-appearance: textfield;
+            appearance: textfield;
+        }
+
+        .alarm-status {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            background-color: color-mix(in srgb, var(--c-glass) 12%, transparent);
+            color: var(--c-light);
+            font-size: 0.9rem;
+            text-align: center;
+            border: 1px solid color-mix(in srgb, var(--c-light) 10%, transparent);
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .alarm-modal-footer {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .alarm-modal-btn {
+            flex: 1;
+            padding: 0.9rem 1.5rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 300ms ease;
+        }
+
+        .alarm-modal-btn.close-btn {
+            background-color: color-mix(in srgb, var(--c-content) 18%, transparent);
+            color: var(--c-light);
+            border: 1.5px solid color-mix(in srgb, var(--c-light) 15%, transparent);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .alarm-modal-btn.close-btn:hover {
+            background-color: color-mix(in srgb, var(--c-content) 28%, transparent);
+            border-color: color-mix(in srgb, var(--c-light) 25%, transparent);
+            transform: translateY(-2px);
+        }
+
+        .alarm-modal-btn.close-btn:active {
+            transform: translateY(0);
+        }
+
+        .alarm-modal-btn.save-btn {
+            background-color: var(--c-action);
+            color: white;
+            box-shadow: 0 4px 12px color-mix(in srgb, var(--c-action) 40%, transparent);
+        }
+
+        .alarm-modal-btn.save-btn:hover {
+            background-color: color-mix(in srgb, var(--c-action) 120%, transparent);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px color-mix(in srgb, var(--c-action) 50%, transparent);
+        }
+
+        .alarm-modal-btn.save-btn:active {
+            transform: translateY(0);
+        }
+
+        .device-clock {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10;
+            padding: 16px 32px;
+            border-radius: 99em;
+            background-color: color-mix(in srgb, var(--c-glass) 12%, transparent);
+            backdrop-filter: blur(8px) saturate(var(--saturation));
+            -webkit-backdrop-filter: blur(8px) saturate(var(--saturation));
+            color: var(--c-light);
+            font-size: 1.8rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            box-shadow:
+                inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 10%), transparent),
+                inset 1.8px 3px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 90%), transparent),
+                inset -2px -2px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 80%), transparent),
+                inset -3px -8px 1px -6px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 60%), transparent),
+                inset -0.3px -1px 4px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 12%), transparent),
+                inset -1.5px 2.5px 0px -2px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
+                inset 0px 3px 4px -2px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
+                inset 2px -6.5px 1px -4px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
+                0px 1px 5px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
+                0px 6px 16px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 8%), transparent);
+            transition: background-color 400ms cubic-bezier(1, 0.0, 0.4, 1),
+                        box-shadow 400ms cubic-bezier(1, 0.0, 0.4, 1);
+        }
+
+        .device-clock.pulse {
+            animation: clockBubble 600ms cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes clockBubble {
+            0% {
+                transform: scale(1);
+                filter: brightness(1);
+            }
+            50% {
+                transform: scale(1.05);
+                filter: brightness(1.1);
+            }
+            100% {
+                transform: scale(1);
+                filter: brightness(1);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .device-clock {
+                top: 10px;
+                right: 10px;
+                padding: 12px 20px;
+                font-size: 1.4rem;
+            }
+        }
+
+        .todo-btn {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            z-index: 9;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            background-color: color-mix(in srgb, var(--c-glass) 12%, transparent);
+            backdrop-filter: blur(8px) saturate(var(--saturation));
+            -webkit-backdrop-filter: blur(8px) saturate(var(--saturation));
+            color: var(--c-light);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 300ms ease;
+            box-shadow:
+                inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 10%), transparent),
+                0px 1px 5px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent);
+        }
+
+        .todo-btn:hover {
+            transform: scale(1.1);
+            background-color: color-mix(in srgb, var(--c-glass) 18%, transparent);
+        }
+
+        .todo-btn:active {
+            transform: scale(0.95);
+        }
+
+        .todo-floating {
+            position: fixed;
+            right: 20px;
+            bottom: 140px;
+            z-index: 15;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px) scale(0.9);
+            transition: all 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .todo-floating.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+
+        .todo-floating-content {
+            background: linear-gradient(135deg, 
+                color-mix(in srgb, var(--c-glass) 20%, transparent) 0%,
+                color-mix(in srgb, var(--c-glass) 12%, transparent) 50%,
+                color-mix(in srgb, var(--c-glass) 6%, transparent) 100%);
+            backdrop-filter: blur(50px) saturate(250%) brightness(1.2) contrast(1.1);
+            -webkit-backdrop-filter: blur(50px) saturate(250%) brightness(1.2) contrast(1.1);
+            border-radius: 1.5rem;
+            padding: 1.2rem;
+            min-width: 280px;
+            max-width: 360px;
+            max-height: 450px;
+            border: 1px solid color-mix(in srgb, var(--c-light) 15%, transparent);
+            box-shadow:
+                inset 0 0 0 0.5px color-mix(in srgb, var(--c-light) 25%, transparent),
+                inset 1px 1px 8px color-mix(in srgb, var(--c-light) 15%, transparent),
+                inset -1px -1px 10px color-mix(in srgb, var(--c-light) 8%, transparent),
+                inset -0.5px -0.5px 18px color-mix(in srgb, var(--c-light) 10%, transparent),
+                0px 12px 32px 0px rgba(0, 0, 0, 0.1),
+                0px 24px 60px rgba(0, 0, 0, 0.12);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .todo-floating-header {
+            color: var(--c-light);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            text-align: center;
+            letter-spacing: 0.05em;
+        }
+
+        .todo-input-container {
+            display: flex;
+            gap: 0.4rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .todo-input {
+            flex: 1;
+            padding: 0.6rem;
+            border: 1px solid color-mix(in srgb, var(--c-light) 15%, transparent);
+            border-radius: 0.75rem;
+            background: linear-gradient(135deg, 
+                color-mix(in srgb, var(--c-glass) 12%, transparent) 0%,
+                color-mix(in srgb, var(--c-glass) 6%, transparent) 100%);
+            backdrop-filter: blur(25px) saturate(220%) brightness(1.15);
+            -webkit-backdrop-filter: blur(25px) saturate(220%) brightness(1.15);
+            color: var(--c-light);
+            font-size: 0.85rem;
+            transition: all 200ms ease;
+            box-shadow:
+                inset 0 0 0 0.5px color-mix(in srgb, var(--c-light) 18%, transparent),
+                inset 1px 1px 4px color-mix(in srgb, var(--c-light) 10%, transparent);
+        }
+
+        .todo-input:focus {
+            outline: none;
+            border-color: color-mix(in srgb, var(--c-light) 20%, transparent);
+            background: linear-gradient(135deg, 
+                color-mix(in srgb, var(--c-glass) 15%, transparent) 0%,
+                color-mix(in srgb, var(--c-glass) 8%, transparent) 100%);
+            box-shadow:
+                inset 0 0 0 0.5px color-mix(in srgb, var(--c-light) 22%, transparent),
+                inset 1px 1px 6px color-mix(in srgb, var(--c-light) 12%, transparent);
+        }
+
+        .todo-input::placeholder {
+            color: color-mix(in srgb, var(--c-light) 60%, transparent);
+        }
+
+        .todo-add-btn {
+            padding: 0.6rem 1.2rem;
+            border: 1px solid color-mix(in srgb, var(--c-action) 18%, transparent);
+            border-radius: 0.75rem;
+            background: linear-gradient(135deg, 
+                color-mix(in srgb, var(--c-action) 15%, transparent) 0%,
+                color-mix(in srgb, var(--c-action) 8%, transparent) 100%);
+            backdrop-filter: blur(25px) saturate(220%) brightness(1.15);
+            -webkit-backdrop-filter: blur(25px) saturate(220%) brightness(1.15);
+            color: var(--c-light);
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 200ms ease;
+            box-shadow:
+                inset 0 0 0 0.5px color-mix(in srgb, var(--c-action) 20%, transparent),
+                inset 1px 1px 4px color-mix(in srgb, var(--c-action) 12%, transparent);
+        }
+
+        .todo-add-btn:hover {
+            background: linear-gradient(135deg, 
+                color-mix(in srgb, var(--c-action) 20%, transparent) 0%,
+                color-mix(in srgb, var(--c-action) 12%, transparent) 100%);
+            border-color: color-mix(in srgb, var(--c-action) 25%, transparent);
+            transform: translateY(-2px);
+            box-shadow:
+                inset 0 0 0 0.5px color-mix(in srgb, var(--c-action) 25%, transparent),
+                inset 1px 1px 6px color-mix(in srgb, var(--c-action) 15%, transparent);
+        }
+
+        .todo-list-container {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+        }
+
+        .todo-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .todo-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.6rem;
+            border: 1px solid color-mix(in srgb, var(--c-light) 12%, transparent);
+            border-radius: 0.75rem;
+            background: linear-gradient(135deg, 
+                color-mix(in srgb, var(--c-glass) 10%, transparent) 0%,
+                color-mix(in srgb, var(--c-glass) 5%, transparent) 100%);
+            backdrop-filter: blur(20px) saturate(220%) brightness(1.1);
+            -webkit-backdrop-filter: blur(20px) saturate(220%) brightness(1.1);
+            transition: all 200ms ease;
+            box-shadow:
+                inset 0 0 0 0.5px color-mix(in srgb, var(--c-light) 15%, transparent),
+                inset 1px 1px 3px color-mix(in srgb, var(--c-light) 8%, transparent);
+        }
+
+        .todo-item:hover {
+            background: linear-gradient(135deg, 
+                color-mix(in srgb, var(--c-glass) 12%, transparent) 0%,
+                color-mix(in srgb, var(--c-glass) 6%, transparent) 100%);
+            border-color: color-mix(in srgb, var(--c-light) 15%, transparent);
+            transform: translateX(-2px);
+            box-shadow:
+                inset 0 0 0 0.5px color-mix(in srgb, var(--c-light) 18%, transparent),
+                inset 1px 1px 5px color-mix(in srgb, var(--c-light) 10%, transparent);
+        }
+
+        .todo-checkbox {
+            width: 18px;
+            height: 18px;
+            border: 2px solid color-mix(in srgb, var(--c-light) 30%, transparent);
+            border-radius: 0.25rem;
+            background: transparent;
+            cursor: pointer;
+            transition: all 200ms ease;
+            flex-shrink: 0;
+        }
+
+        .todo-checkbox:checked {
+            background: var(--c-action);
+            border-color: var(--c-action);
+        }
+
+        .todo-text {
+            flex: 1;
+            color: var(--c-light);
+            font-size: 0.85rem;
+            transition: all 200ms ease;
+        }
+
+        .todo-text.completed {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        .todo-delete {
+            background: none;
+            border: none;
+            color: color-mix(in srgb, var(--c-light) 60%, transparent);
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 0.2rem;
+            border-radius: 0.25rem;
+            transition: all 200ms ease;
+            flex-shrink: 0;
+        }
+
+        .todo-delete:hover {
+            background: color-mix(in srgb, #ff4444 20%, transparent);
+            border-color: color-mix(in srgb, #ff4444 30%, transparent);
+        }
+
+        .todo-empty {
+            text-align: center;
+            color: color-mix(in srgb, var(--c-light) 60%, transparent);
+            font-size: 0.9rem;
+            padding: 2rem;
+        }
+
+        .todo-floating-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 0.8rem;
+            border-top: 1px solid color-mix(in srgb, var(--c-light) 10%, transparent);
+        }
+
+        .todo-count {
+            color: color-mix(in srgb, var(--c-light) 80%, transparent);
+            font-size: 0.8rem;
+        }
+
+        .clear-completed-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid color-mix(in srgb, #ffffff 25%, transparent);
+            border-radius: 0.5rem;
+            background: linear-gradient(135deg, 
+                color-mix(in srgb, #ffffff 25%, transparent) 0%,
+                color-mix(in srgb, #ffffff 15%, transparent) 100%);
+            backdrop-filter: blur(15px) saturate(180%);
+            -webkit-backdrop-filter: blur(15px) saturate(180%);
+            color: color-mix(in srgb, var(--c-dark) 90%, var(--c-light) 10%);
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 150ms ease;
+            box-shadow:
+                inset 0 0 0 0.5px color-mix(in srgb, #ffffff 35%, transparent),
+                inset 1px 1px 4px color-mix(in srgb, #ffffff 20%, transparent);
+        }
+
+        .clear-completed-btn:hover {
+            background: linear-gradient(135deg, 
+                color-mix(in srgb, #ffffff 35%, transparent) 0%,
+                color-mix(in srgb, #ffffff 20%, transparent) 100%);
+            border-color: color-mix(in srgb, #ffffff 35%, transparent);
+            color: color-mix(in srgb, var(--c-dark) 95%, var(--c-light) 5%);
+            box-shadow:
+                inset 0 0 0 0.5px color-mix(in srgb, #ffffff 45%, transparent),
+                inset 1px 1px 6px color-mix(in srgb, #ffffff 25%, transparent),
+                0 4px 12px rgba(255, 255, 255, 0.15);
+        }
+
+        .clear-completed-btn:active {
+            transform: translateY(-1px);
+            box-shadow:
+                inset 0 0 0 0.5px color-mix(in srgb, #ffffff 40%, transparent),
+                inset 1px 1px 4px color-mix(in srgb, #ffffff 22%, transparent),
+                0 2px 6px rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .todo-floating {
+                right: 10px;
+                bottom: 140px;
+            }
+
+            .todo-floating-content {
+                min-width: 280px;
+                max-width: 320px;
+                padding: 1rem;
+            }
+        }
+
+        .music-btn {
+            position: fixed;
+            right: 20px;
+            bottom: 80px;
+            z-index: 11;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            background-color: color-mix(in srgb, var(--c-glass) 12%, transparent);
+            backdrop-filter: blur(8px) saturate(var(--saturation));
+            -webkit-backdrop-filter: blur(8px) saturate(var(--saturation));
+            color: var(--c-light);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 300ms ease;
+            box-shadow:
+                inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 10%), transparent),
+                0px 1px 5px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent);
+        }
+
+        .music-btn:hover {
+            transform: scale(1.1);
+            background-color: color-mix(in srgb, var(--c-glass) 18%, transparent);
+        }
+
+        .music-btn:active {
+            transform: scale(0.95);
+        }
+
+        .music-services {
+            position: fixed;
+            right: 20px;
+            bottom: 140px;
+            z-index: 10;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px) scale(0.9);
+            transition: all 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .music-services.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+
+        .music-services-content {
+            background: linear-gradient(135deg, 
+                color-mix(in srgb, var(--c-glass) 20%, transparent) 0%,
+                color-mix(in srgb, var(--c-glass) 12%, transparent) 50%,
+                color-mix(in srgb, var(--c-glass) 6%, transparent) 100%);
+            backdrop-filter: blur(50px) saturate(250%) brightness(1.2) contrast(1.1);
+            -webkit-backdrop-filter: blur(50px) saturate(250%) brightness(1.2) contrast(1.1);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            min-width: 280px;
+            border: 1px solid color-mix(in srgb, var(--c-light) 15%, transparent);
+            box-shadow:
+                inset 0 0 0 0.5px color-mix(in srgb, var(--c-light) 25%, transparent),
+                inset 1px 1px 8px color-mix(in srgb, var(--c-light) 15%, transparent),
+                inset -1px -1px 10px color-mix(in srgb, var(--c-light) 8%, transparent),
+                inset -0.5px -0.5px 18px color-mix(in srgb, var(--c-light) 10%, transparent),
+                0px 12px 32px 0px rgba(0, 0, 0, 0.1),
+                0px 24px 60px rgba(0, 0, 0, 0.12);
+        }
+
+        .music-services-header {
+            color: var(--c-light);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-align: center;
+            letter-spacing: 0.05em;
+        }
+
+        .music-services-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        .music-service-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            border-radius: 1rem;
+            border: 1px solid color-mix(in srgb, var(--c-light) 15%, transparent);
+            background: linear-gradient(135deg, 
+                color-mix(in srgb, var(--c-glass) 12%, transparent) 0%,
+                color-mix(in srgb, var(--c-glass) 6%, transparent) 100%);
+            backdrop-filter: blur(25px) saturate(220%) brightness(1.1);
+            -webkit-backdrop-filter: blur(25px) saturate(220%) brightness(1.1);
+            color: var(--c-light);
+            text-decoration: none;
+            transition: all 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            gap: 0.5rem;
+            box-shadow:
+                inset 0 0 0 0.5px color-mix(in srgb, var(--c-light) 18%, transparent),
+                inset 1px 1px 4px color-mix(in srgb, var(--c-light) 10%, transparent);
+        }
+
+        .music-service-btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            border-color: color-mix(in srgb, var(--c-light) 20%, transparent);
+            background: linear-gradient(135deg, 
+                color-mix(in srgb, var(--c-glass) 15%, transparent) 0%,
+                color-mix(in srgb, var(--c-glass) 8%, transparent) 100%);
+            box-shadow:
+                inset 0 0 0 0.5px color-mix(in srgb, var(--c-light) 22%, transparent),
+                inset 1px 1px 6px color-mix(in srgb, var(--c-light) 12%, transparent),
+                0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .music-service-btn:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+
+        .music-service-btn svg {
+            width: 24px;
+            height: 24px;
+            transition: transform 300ms ease;
+            filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.15));
+        }
+
+        .music-service-btn:hover svg {
+            transform: scale(1.1);
+            filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.25));
+        }
+
+        .music-service-btn span {
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .spotify-btn:hover {
+            border-color: color-mix(in srgb, #1DB954 40%, transparent);
+            background-color: color-mix(in srgb, #1DB954 15%, transparent);
+        }
+
+        .spotify-btn:hover svg {
+            filter: drop-shadow(0 4px 8px rgba(29, 185, 84, 0.4));
+        }
+
+        .youtube-btn:hover {
+            border-color: color-mix(in srgb, #FF0000 40%, transparent);
+            background-color: color-mix(in srgb, #FF0000 15%, transparent);
+        }
+
+        .youtube-btn:hover svg {
+            filter: drop-shadow(0 4px 8px rgba(255, 0, 0, 0.4));
+        }
+
+        .apple-btn:hover {
+            border-color: color-mix(in srgb, #FA243C 40%, transparent);
+            background-color: color-mix(in srgb, #FA243C 15%, transparent);
+        }
+
+        .apple-btn:hover svg {
+            filter: drop-shadow(0 4px 8px rgba(250, 36, 60, 0.4));
+        }
+
+        .soundcloud-btn:hover {
+            border-color: color-mix(in srgb, #FF5500 40%, transparent);
+            background-color: color-mix(in srgb, #FF5500 15%, transparent);
+        }
+
+        .soundcloud-btn:hover svg {
+            filter: drop-shadow(0 4px 8px rgba(255, 85, 0, 0.4));
+        }
+
+        .deezer-btn:hover {
+            border-color: color-mix(in srgb, #FF0000 40%, transparent);
+            background-color: color-mix(in srgb, #FF0000 15%, transparent);
+        }
+
+        .deezer-btn:hover svg {
+            filter: drop-shadow(0 4px 8px rgba(255, 0, 0, 0.4));
+        }
+
+        .pandora-btn:hover {
+            border-color: color-mix(in srgb, #0054FF 40%, transparent);
+            background-color: color-mix(in srgb, #0054FF 15%, transparent);
+        }
+
+        .pandora-btn:hover svg {
+            filter: drop-shadow(0 4px 8px rgba(0, 84, 255, 0.4));
+        }
+
+        @media (max-width: 768px) {
+            .todo-btn {
+                right: 70px;
+                bottom: 20px;
+            }
+
+            .music-btn {
+                right: 10px;
+                bottom: 20px;
+            }
+
+            .music-services {
+                right: 10px;
+                bottom: 80px;
+            }
+
+            .todo-floating {
+                right: 10px;
+                bottom: 80px;
+                z-index: 15;
+            }
+
+            .music-services-content {
+                min-width: 260px;
+                padding: 1rem;
+            }
+
+            .music-services-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.5rem;
+            }
+
+            .music-service-btn {
+                padding: 0.75rem;
+            }
+
+            .music-service-btn svg {
+                width: 20px;
+                height: 20px;
+            }
+
+            .music-service-btn span {
+                font-size: 0.7rem;
+            }
+        }
+
+        .todo-modal {
+            position: fixed;
+            top: 0;
+            right: -450px;
+            width: 450px;
+            height: 100vh;
+            background-color: color-mix(in srgb, var(--c-glass) 15%, transparent);
+            backdrop-filter: blur(12px) saturate(var(--saturation));
+            -webkit-backdrop-filter: blur(12px) saturate(var(--saturation));
+            z-index: 100;
+            transition: right 500ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 500ms ease, visibility 500ms ease;
+            box-shadow: -10px 0 40px rgba(0, 0, 0, 0.3);
+            border-left: 1px solid color-mix(in srgb, var(--c-light) 10%, transparent);
+            overflow-y: auto;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .todo-modal.active {
+            right: 0;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .todo-modal.closing {
+            right: -450px;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .todo-modal-content {
+            padding: 2rem;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .todo-modal.active .todo-modal-content {
+            animation: slideInContent 500ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        .todo-modal.closing .todo-modal-content {
+            animation: slideOutContent 500ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes slideInContent {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOutContent {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+        }
+
+        .todo-modal.active .todo-modal-header {
+            animation: fadeInDown 500ms cubic-bezier(0.34, 1.56, 0.64, 1) 100ms forwards;
+            opacity: 0;
+        }
+
+        .todo-modal.closing .todo-modal-header {
+            animation: fadeOutUp 500ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            opacity: 1;
+        }
+
+        .todo-modal.active .todo-input-container {
+            animation: fadeInDown 500ms cubic-bezier(0.34, 1.56, 0.64, 1) 150ms forwards;
+            opacity: 0;
+        }
+
+        .todo-modal.closing .todo-input-container {
+            animation: fadeOutUp 500ms cubic-bezier(0.34, 1.56, 0.64, 1) 50ms forwards;
+            opacity: 1;
+        }
+
+        .todo-modal.active .todo-list {
+            animation: fadeInUp 500ms cubic-bezier(0.34, 1.56, 0.64, 1) 200ms forwards;
+            opacity: 0;
+        }
+
+        .todo-modal.closing .todo-list {
+            animation: fadeOutDown 500ms cubic-bezier(0.34, 1.56, 0.64, 1) 100ms forwards;
+            opacity: 1;
+        }
+
+        .todo-modal.active .todo-modal-footer {
+            animation: fadeInUp 500ms cubic-bezier(0.34, 1.56, 0.64, 1) 250ms forwards;
+            opacity: 0;
+        }
+
+        .todo-modal.closing .todo-modal-footer {
+            animation: fadeOutDown 500ms cubic-bezier(0.34, 1.56, 0.64, 1) 150ms forwards;
+            opacity: 1;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeOutUp {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes fadeOutDown {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+        }
+
+        .todo-modal-header {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--c-light);
+            margin-bottom: 2rem;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+
+        .todo-input-container {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid color-mix(in srgb, var(--c-action) 30%, transparent);
+        }
+
+        .todo-input {
+            flex: 1;
+            padding: 0.9rem 1rem;
+            border-radius: 0.75rem;
+            border: 2px solid color-mix(in srgb, var(--c-light) 15%, transparent);
+            background-color: color-mix(in srgb, var(--c-glass) 12%, transparent);
+            color: var(--c-light);
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 300ms ease;
+        }
+
+        .todo-input:focus {
+            outline: none;
+            border-color: var(--c-action);
+            background-color: color-mix(in srgb, var(--c-glass) 18%, transparent);
+            box-shadow: 0 0 10px color-mix(in srgb, var(--c-action) 30%, transparent);
+        }
+
+        .todo-input::placeholder {
+            color: color-mix(in srgb, var(--c-light) 40%, transparent);
+        }
+
+        .todo-add-btn {
+            padding: 0.9rem 1.5rem;
+            border: none;
+            border-radius: 0.75rem;
+            background-color: var(--c-action);
+            color: white;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 300ms ease;
+            box-shadow: 0 4px 12px color-mix(in srgb, var(--c-action) 40%, transparent);
+        }
+
+        .todo-add-btn:hover {
+            background-color: color-mix(in srgb, var(--c-action) 120%, transparent);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px color-mix(in srgb, var(--c-action) 50%, transparent);
+        }
+
+        .todo-add-btn:active {
+            transform: translateY(0);
+        }
+
+        .todo-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .todo-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            border-radius: 0.75rem;
+            background-color: color-mix(in srgb, var(--c-glass) 10%, transparent);
+            border: 1.5px solid color-mix(in srgb, var(--c-light) 12%, transparent);
+            transition: all 300ms ease;
+            animation: slideInItem 400ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            opacity: 0;
+        }
+
+        @keyframes slideInItem {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .todo-item:nth-child(1) {
+            animation-delay: 250ms;
+        }
+
+        .todo-item:nth-child(2) {
+            animation-delay: 300ms;
+        }
+
+        .todo-item:nth-child(3) {
+            animation-delay: 350ms;
+        }
+
+        .todo-item:nth-child(n+4) {
+            animation-delay: calc(250ms + (var(--index) * 50ms));
+        }
+
+        .todo-item:hover {
+            background-color: color-mix(in srgb, var(--c-glass) 16%, transparent);
+            border-color: color-mix(in srgb, var(--c-action) 40%, transparent);
+            transform: translateX(-4px);
+        }
+
+        .todo-checkbox {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            accent-color: var(--c-action);
+            flex-shrink: 0;
+        }
+
+        .todo-text {
+            flex: 1;
+            color: var(--c-light);
+            font-size: 0.95rem;
+            font-weight: 500;
+            word-break: break-word;
+            line-height: 1.4;
+        }
+
+        .todo-item.completed .todo-text {
+            text-decoration: line-through;
+            color: color-mix(in srgb, var(--c-light) 50%, transparent);
+            font-weight: 400;
+        }
+
+        .todo-delete-btn {
+            padding: 0.5rem 0.9rem;
+            border: none;
+            border-radius: 0.5rem;
+            background-color: color-mix(in srgb, #ff4444 15%, transparent);
+            color: #ff6666;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 300ms ease;
+            flex-shrink: 0;
+        }
+
+        .todo-delete-btn:hover {
+            background-color: color-mix(in srgb, #ff4444 35%, transparent);
+            transform: scale(1.05);
+        }
+
+        .todo-delete-btn:active {
+            transform: scale(0.95);
+        }
+
+        .todo-empty {
+            text-align: center;
+            color: color-mix(in srgb, var(--c-light) 45%, transparent);
+            padding: 3rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.6;
+        }
+
+        .todo-modal-footer {
+            display: flex;
+            gap: 1rem;
+            margin-top: auto;
+            padding-top: 1.5rem;
+            border-top: 2px solid color-mix(in srgb, var(--c-light) 12%, transparent);
+        }
+
+        .todo-modal-btn {
+            flex: 1;
+            padding: 0.9rem 1.5rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 300ms ease;
+        }
+
+        .todo-modal-btn.close-btn {
+            background-color: color-mix(in srgb, var(--c-content) 18%, transparent);
+            color: var(--c-light);
+            border: 1.5px solid color-mix(in srgb, var(--c-light) 15%, transparent);
+        }
+
+        .todo-modal-btn.close-btn:hover {
+            background-color: color-mix(in srgb, var(--c-content) 28%, transparent);
+            border-color: color-mix(in srgb, var(--c-light) 25%, transparent);
+            transform: translateY(-2px);
+        }
+
+        .todo-modal-btn.close-btn:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .todo-modal {
+                width: 100%;
+                right: -100%;
+            }
+
+            .todo-modal-content {
+                padding: 1.5rem;
+            }
+
+            .todo-modal-header {
+                font-size: 1.2rem;
+            }
         }
     </style>
 </head>
@@ -572,9 +1994,14 @@
         </svg>
         
         <!-- Heading: Focal (Top Left) -->
-        <h1 class="focal-title absolute top-0 left-0 p-4 text-white text-5xl font-avenir-rounded tracking-widest leading-none sm:p-6 sm:text-7xl lg:text-8xl transition duration-300">
-            focal
-        </h1>
+        <div class="focal-heading-container absolute top-0 left-0 p-4 sm:p-6">
+            <h1 class="focal-title text-white text-5xl font-avenir-rounded tracking-widest leading-none sm:text-7xl lg:text-8xl transition duration-300">
+                focal
+            </h1>
+            <p class="focal-subtitle text-white text-sm sm:text-base font-light tracking-widest mt-2 opacity-70">
+                by Keshv
+            </p>
+        </div>
 
 <!-- Centered Button Group -->
         <!-- Removed mt-48 to fix centering issue -->
@@ -597,6 +2024,181 @@
             </div>
         </div>
         
+    </div>
+
+    <!-- Device Clock Display -->
+    <div id="deviceClock" class="device-clock">00:00</div>
+
+    <!-- To-Do List Button -->
+    <button id="todoBtn" class="todo-btn" title="To-do list">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 11l3 3L22 4"></path>
+            <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+    </button>
+
+    <!-- To-Do List Floating Toggle -->
+    <div id="todoFloating" class="todo-floating">
+        <div class="todo-floating-content">
+            <div class="todo-floating-header">My To-Do List</div>
+            
+            <div class="todo-input-container">
+                <input type="text" id="todoInput" class="todo-input" placeholder="Add a new task...">
+                <button id="todoAddBtn" class="todo-add-btn">Add</button>
+            </div>
+
+            <div class="todo-list-container">
+                <div id="todoList" class="todo-list"></div>
+                <div id="todoEmpty" class="todo-empty">No tasks yet. Add one above!</div>
+            </div>
+
+            <div class="todo-floating-footer">
+                <span id="todoCount" class="todo-count">0 tasks</span>
+                <button id="clearCompleted" class="clear-completed-btn">Clear Completed</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Music Button -->
+    <button id="musicBtn" class="music-btn" title="Music">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 18V5l12-2v13"></path>
+            <circle cx="6" cy="18" r="3"></circle>
+            <circle cx="18" cy="16" r="3"></circle>
+        </svg>
+    </button>
+
+    <!-- Music Services Toggle -->
+    <div id="musicServices" class="music-services">
+        <div class="music-services-content">
+            <div class="music-services-header">Music Services</div>
+            <div class="music-services-grid">
+                <a href="https://open.spotify.com" target="_blank" class="music-service-btn spotify-btn" title="Spotify">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#1DB954">
+                        <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+                    </svg>
+                    <span>Spotify</span>
+                </a>
+                <a href="https://music.youtube.com" target="_blank" class="music-service-btn youtube-btn" title="YouTube Music">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#FF0000">
+                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                    </svg>
+                    <span>YouTube</span>
+                </a>
+                <a href="https://music.apple.com" target="_blank" class="music-service-btn apple-btn" title="Apple Music">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#FA243C">
+                        <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                    </svg>
+                    <span>Apple</span>
+                </a>
+                <a href="https://soundcloud.com" target="_blank" class="music-service-btn soundcloud-btn" title="SoundCloud">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#FF5500">
+                        <path d="M12 4.5v15a7.5 7.5 0 1 1-7.5-7.5h12.5a3.5 3.5 0 0 1 0 7H12v-1.5h5a2 2 0 0 0 0-4h-5V4.5h7.5zm-2.5 15a6 6 0 1 0-6-6h6v6zm0-6v-6h-6a6 6 0 0 0 6 6z"/>
+                    </svg>
+                    <span>SoundCloud</span>
+                </a>
+                <a href="https://www.deezer.com" target="_blank" class="music-service-btn deezer-btn" title="Deezer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#FF0000">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                    </svg>
+                    <span>Deezer</span>
+                </a>
+                <a href="https://www.pandora.com" target="_blank" class="music-service-btn pandora-btn" title="Pandora">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#0054FF">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 5-5v10zm4 0l-5-5 5-5v10z"/>
+                    </svg>
+                    <span>Pandora</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- To-Do List Modal -->
+    <div id="todoModal" class="todo-modal">
+        <div class="todo-modal-content">
+            <div class="todo-modal-header">My To-Do List</div>
+            
+            <div class="todo-input-container">
+                <input type="text" id="todoInput" class="todo-input" placeholder="Add a new task...">
+                <button id="todoAddBtn" class="todo-add-btn">Add</button>
+            </div>
+
+            <ul id="todoList" class="todo-list"></ul>
+            <div id="todoEmpty" class="todo-empty">No tasks yet. Add one to get started!</div>
+
+            <div class="todo-modal-footer">
+                <button id="closeTodoModal" class="todo-modal-btn close-btn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alarm Button -->
+    <button id="alarmBtn" class="alarm-btn" title="Alarm settings">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="13" r="8"></circle>
+            <path d="M12 9v4l3 2"></path>
+            <path d="M9 2l-0.5 1"></path>
+            <path d="M15 2l0.5 1"></path>
+        </svg>
+    </button>
+
+    <!-- Alarm Modal -->
+    <div id="alarmModal" class="alarm-modal">
+        <div class="alarm-modal-content">
+            <div class="alarm-modal-header">Alarm Settings</div>
+            
+            <div class="alarm-setting">
+                <label>
+                    <span>Enable Alarm</span>
+                    <button id="alarmToggle" class="alarm-toggle-switch"></button>
+                </label>
+            </div>
+
+            <div class="alarm-setting">
+                <label for="focusDuration">Focus Mode Duration (minutes):</label>
+                <input type="number" id="focusDuration" class="alarm-number-input" min="1" max="120" value="25">
+            </div>
+
+            <div class="alarm-setting">
+                <label for="shortBreakDuration">Short Break Duration (minutes):</label>
+                <input type="number" id="shortBreakDuration" class="alarm-number-input" min="1" max="60" value="5">
+            </div>
+
+            <div class="alarm-setting">
+                <label for="longBreakDuration">Long Break Duration (minutes):</label>
+                <input type="number" id="longBreakDuration" class="alarm-number-input" min="1" max="120" value="15">
+            </div>
+
+            <div class="alarm-setting">
+                <label for="alarmHours">Set Alarm Time:</label>
+                <div class="alarm-time-container">
+                    <input type="number" id="alarmHours" class="alarm-time-input-12h" min="1" max="12" placeholder="HH">
+                    <span class="alarm-time-separator">:</span>
+                    <input type="number" id="alarmMinutes" class="alarm-time-input-12h" min="0" max="59" placeholder="MM">
+                    <select id="alarmPeriod" class="alarm-period-select">
+                        <option value="AM">AM</option>
+                        <option value="PM">PM</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="alarm-setting">
+                <label for="alarmSound">Alarm Sound:</label>
+                <select id="alarmSound" class="alarm-sound-select">
+                    <option value="beep">Beep</option>
+                    <option value="chime">Chime</option>
+                    <option value="bell">Bell</option>
+                    <option value="digital">Digital</option>
+                </select>
+            </div>
+
+            <div id="alarmStatus" class="alarm-status"></div>
+
+            <div class="alarm-modal-footer">
+                <button id="closeAlarmModal" class="alarm-modal-btn close-btn">Close</button>
+                <button id="saveAlarmSettings" class="alarm-modal-btn save-btn">Save</button>
+            </div>
+        </div>
     </div>
 
     <!-- Full Screen Background Image Container -->
@@ -629,11 +2231,64 @@
         const timerToggleBtn = document.getElementById('timerToggle');
         const timerResetBtn = document.getElementById('timerReset');
         const changeBgBtn = document.getElementById('changeBg');
+        const deviceClockEl = document.getElementById('deviceClock');
         const switcher = document.querySelector('.switcher');
         const bgContainer = document.getElementById('bgContainer');
         const bgImages = document.querySelectorAll('.bg-image');
         let currentBgIndex = 0;
         let bgInterval;
+        let clockInterval;
+
+        // To-Do List variables
+        const todoBtn = document.getElementById('todoBtn');
+        const todoFloating = document.getElementById('todoFloating');
+        const todoInput = document.getElementById('todoInput');
+        const todoAddBtn = document.getElementById('todoAddBtn');
+        const todoList = document.getElementById('todoList');
+        const todoEmpty = document.getElementById('todoEmpty');
+        const clearCompleted = document.getElementById('clearCompleted');
+        const todoCount = document.getElementById('todoCount');
+        let todos = [];
+        let todoFloatingOpen = false;
+
+        function openTodoFloating() {
+            todoFloatingOpen = true;
+            todoFloating.classList.add('active');
+        }
+
+        function closeTodoFloating() {
+            todoFloatingOpen = false;
+            todoFloating.classList.remove('active');
+        }
+
+        // Alarm variables
+        const alarmBtn = document.getElementById('alarmBtn');
+        const alarmModal = document.getElementById('alarmModal');
+        const alarmToggle = document.getElementById('alarmToggle');
+        const alarmSound = document.getElementById('alarmSound');
+        const alarmHours = document.getElementById('alarmHours');
+        const alarmMinutes = document.getElementById('alarmMinutes');
+        const alarmPeriod = document.getElementById('alarmPeriod');
+        const alarmStatus = document.getElementById('alarmStatus');
+        const focusDuration = document.getElementById('focusDuration');
+        const shortBreakDuration = document.getElementById('shortBreakDuration');
+        const longBreakDuration = document.getElementById('longBreakDuration');
+        const closeAlarmModal = document.getElementById('closeAlarmModal');
+        const saveAlarmSettings = document.getElementById('saveAlarmSettings');
+        
+        let alarmEnabled = false;
+        let selectedAlarmSound = 'beep';
+        let alarmSetTime = null; // Will store in 24-hour format (HH:MM)
+        let alarmCheckInterval = null;
+        let alarmTriggered = false;
+        
+        // Alarm sound URLs
+        const alarmSounds = {
+            beep: 'https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3',
+            chime: 'https://assets.mixkit.co/sfx/preview/mixkit-chime-bell-ding-ding-2810.mp3',
+            bell: 'https://assets.mixkit.co/sfx/preview/mixkit-bell-notification-alarm-857.mp3',
+            digital: 'https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3'
+        };
         
         // Initialize background with first image
         function initBackground() {
@@ -681,6 +2336,62 @@
             return `${mins}:${secs}`;
         }
 
+        function updateDeviceClock() {
+            const now = new Date();
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // 0 should be 12
+            const hoursStr = String(hours).padStart(2, '0');
+            const newTime = `${hoursStr}:${minutes} ${ampm}`;
+            
+            // Trigger bubble animation if time has changed
+            if (deviceClockEl.textContent !== newTime) {
+                deviceClockEl.classList.remove('pulse');
+                // Trigger reflow to restart animation
+                void deviceClockEl.offsetWidth;
+                deviceClockEl.classList.add('pulse');
+            }
+            
+            deviceClockEl.textContent = newTime;
+        }
+
+        function startDeviceClock() {
+            updateDeviceClock(); // Update immediately
+            if (clockInterval) clearInterval(clockInterval);
+            clockInterval = setInterval(updateDeviceClock, 1000);
+        }
+
+        // Convert 12-hour format to 24-hour format
+        function convertTo24Hour(hours, minutes, period) {
+            let h = parseInt(hours);
+            const m = String(minutes).padStart(2, '0');
+            
+            if (period === 'AM') {
+                if (h === 12) h = 0;
+            } else if (period === 'PM') {
+                if (h !== 12) h += 12;
+            }
+            
+            return `${String(h).padStart(2, '0')}:${m}`;
+        }
+
+        // Convert 24-hour format to 12-hour format
+        function convertTo12Hour(time24) {
+            const [hours, minutes] = time24.split(':');
+            let h = parseInt(hours);
+            const period = h >= 12 ? 'PM' : 'AM';
+            h = h % 12;
+            h = h ? h : 12;
+            
+            return {
+                hours: h,
+                minutes: parseInt(minutes),
+                period: period
+            };
+        }
+
         function updateTimerUI() {
             timerLabelEl.textContent = timerConfig[currentMode].label.toUpperCase();
             timerDisplayEl.textContent = formatTime(remainingSeconds);
@@ -693,13 +2404,13 @@
                 if (currentMode === 'focus') {
                     // After focus, go to short break
                     setMode('short');
-                    // Play a sound or show notification (optional)
-                    new Audio('https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3').play();
+                    // Play alarm sound if enabled
+                    playAlarmSound();
                 } else if (currentMode === 'short' || currentMode === 'long') {
                     // After any break, go back to focus
                     setMode('focus');
-                    // Play a sound or show notification (optional)
-                    new Audio('https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3').play();
+                    // Play alarm sound if enabled
+                    playAlarmSound();
                 }
                 return;
             }
@@ -802,9 +2513,449 @@
             });
         }
 
+        // Alarm functionality
+        function openAlarmModal() {
+            alarmModal.classList.add('active');
+            // Update modal state to reflect current settings
+            alarmToggle.classList.toggle('active', alarmEnabled);
+            alarmSound.value = selectedAlarmSound;
+            if (alarmSetTime) {
+                const time12 = convertTo12Hour(alarmSetTime);
+                alarmHours.value = time12.hours;
+                alarmMinutes.value = String(time12.minutes).padStart(2, '0');
+                alarmPeriod.value = time12.period;
+            }
+            // Update duration inputs
+            focusDuration.value = timerConfig.focus.duration / 60;
+            shortBreakDuration.value = timerConfig.short.duration / 60;
+            longBreakDuration.value = timerConfig.long.duration / 60;
+            updateAlarmStatus();
+        }
+
+        function closeAlarmModalFn() {
+            alarmModal.classList.add('closing');
+            setTimeout(() => {
+                alarmModal.classList.remove('active');
+                alarmModal.classList.remove('closing');
+            }, 400);
+        }
+
+        function updateAlarmStatus() {
+            if (!alarmEnabled) {
+                alarmStatus.textContent = 'Alarm is disabled';
+                return;
+            }
+            
+            if (!alarmSetTime) {
+                alarmStatus.textContent = 'Please set an alarm time';
+                return;
+            }
+
+            const now = new Date();
+            const [hours, minutes] = alarmSetTime.split(':');
+            const alarmDate = new Date();
+            alarmDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+
+            // If alarm time is in the past, set it for tomorrow
+            if (alarmDate < now) {
+                alarmDate.setDate(alarmDate.getDate() + 1);
+            }
+
+            const timeUntil = alarmDate - now;
+            const hoursLeft = Math.floor(timeUntil / (1000 * 60 * 60));
+            const minutesLeft = Math.floor((timeUntil % (1000 * 60 * 60)) / (1000 * 60));
+
+            // Convert to 12-hour format for display
+            const time12 = convertTo12Hour(alarmSetTime);
+            const displayTime = `${String(time12.hours).padStart(2, '0')}:${String(time12.minutes).padStart(2, '0')} ${time12.period}`;
+
+            alarmStatus.textContent = `Alarm set for ${displayTime} (in ${hoursLeft}h ${minutesLeft}m)`;
+        }
+
+        function playAlarmSound() {
+            if (selectedAlarmSound in alarmSounds) {
+                try {
+                    new Audio(alarmSounds[selectedAlarmSound]).play();
+                } catch (e) {
+                    console.log('Could not play alarm sound:', e);
+                }
+            }
+        }
+
+        function startAlarmCheck() {
+            // Clear any existing interval
+            if (alarmCheckInterval) {
+                clearInterval(alarmCheckInterval);
+            }
+
+            if (!alarmEnabled || !alarmSetTime) {
+                return;
+            }
+
+            alarmCheckInterval = setInterval(() => {
+                const now = new Date();
+                const [hours, minutes] = alarmSetTime.split(':');
+                const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+                if (currentTime === alarmSetTime && !alarmTriggered) {
+                    alarmTriggered = true;
+                    playAlarmSound();
+                    showTimerNotification();
+                    
+                    // Reset trigger flag after 1 minute to allow alarm to trigger again tomorrow
+                    setTimeout(() => {
+                        alarmTriggered = false;
+                    }, 60000);
+                }
+            }, 1000);
+        }
+
+        function stopAlarmCheck() {
+            if (alarmCheckInterval) {
+                clearInterval(alarmCheckInterval);
+                alarmCheckInterval = null;
+            }
+            alarmTriggered = false;
+        }
+
+        // To-Do List functionality
+        function renderTodos() {
+            todoList.innerHTML = '';
+            
+            if (todos.length === 0) {
+                todoEmpty.style.display = 'block';
+            } else {
+                todoEmpty.style.display = 'none';
+                todos.forEach((todo, index) => {
+                    const li = document.createElement('li');
+                    li.className = `todo-item ${todo.completed ? 'completed' : ''}`;
+                    
+                    li.innerHTML = `
+                        <input type="checkbox" class="todo-checkbox" ${todo.completed ? 'checked' : ''} data-index="${index}">
+                        <span class="todo-text">${todo.text}</span>
+                        <button class="todo-delete" data-index="${index}">Delete</button>
+                    `;
+                    
+                    todoList.appendChild(li);
+                });
+            }
+            
+            // Update todo count
+            const activeTodos = todos.filter(todo => !todo.completed).length;
+            const completedTodos = todos.filter(todo => todo.completed).length;
+            todoCount.textContent = `${activeTodos} active${activeTodos !== 1 ? 's' : ''}, ${completedTodos} completed`;
+        }
+
+        function addTodo() {
+            const text = todoInput.value.trim();
+            if (text === '') return;
+            
+            todos.push({
+                text: text,
+                completed: false
+            });
+            
+            todoInput.value = '';
+            saveTodos();
+            renderTodos();
+        }
+
+        function toggleTodo(index) {
+            todos[index].completed = !todos[index].completed;
+            saveTodos();
+            renderTodos();
+        }
+
+        function deleteTodo(index) {
+            todos.splice(index, 1);
+            saveTodos();
+            renderTodos();
+        }
+
+        function saveTodos() {
+            localStorage.setItem('todos', JSON.stringify(todos));
+        }
+
+        function loadTodos() {
+            const saved = localStorage.getItem('todos');
+            if (saved) {
+                todos = JSON.parse(saved);
+                renderTodos();
+            }
+        }
+
+        function openTodoModal() {
+            todoModal.classList.add('active');
+        }
+
+        function closeTodoModalFn() {
+            todoModal.classList.add('closing');
+            setTimeout(() => {
+                todoModal.classList.remove('active');
+                todoModal.classList.remove('closing');
+            }, 500);
+        }
+
+        // To-Do List event listeners
+        todoBtn.addEventListener('click', () => {
+            todoFloatingOpen = !todoFloatingOpen;
+            if (todoFloatingOpen) {
+                openTodoFloating();
+            } else {
+                closeTodoFloating();
+            }
+        });
+
+        // Close todo floating when clicking outside
+        document.addEventListener('click', (e) => {
+            if (todoFloatingOpen && 
+                !todoFloating.contains(e.target) && 
+                !todoBtn.contains(e.target)) {
+                closeTodoFloating();
+                todoFloatingOpen = false;
+            }
+        });
+
+        todoAddBtn.addEventListener('click', addTodo);
+        todoInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                addTodo();
+            }
+        });
+
+        clearCompleted.addEventListener('click', () => {
+            todos = todos.filter(todo => !todo.completed);
+            saveTodos();
+            renderTodos();
+        });
+
+        todoList.addEventListener('change', (e) => {
+            if (e.target.classList.contains('todo-checkbox')) {
+                toggleTodo(parseInt(e.target.dataset.index));
+            }
+        });
+
+        todoList.addEventListener('click', (e) => {
+            if (e.target.classList.contains('todo-delete')) {
+                deleteTodo(parseInt(e.target.dataset.index));
+            }
+        });
+
+        // Alarm button click
+        alarmBtn.addEventListener('click', openAlarmModal);
+
+        // Close modal button
+        closeAlarmModal.addEventListener('click', closeAlarmModalFn);
+
+        // Close modal when clicking outside
+        alarmModal.addEventListener('click', (e) => {
+            if (e.target === alarmModal) {
+                closeAlarmModalFn();
+            }
+        });
+
+        // Toggle alarm switch
+        alarmToggle.addEventListener('click', () => {
+            alarmEnabled = !alarmEnabled;
+            alarmToggle.classList.toggle('active', alarmEnabled);
+        });
+
+        // Save alarm settings
+        saveAlarmSettings.addEventListener('click', () => {
+            selectedAlarmSound = alarmSound.value;
+            
+            // Convert 12-hour format to 24-hour format
+            if (alarmHours.value && alarmMinutes.value) {
+                alarmSetTime = convertTo24Hour(alarmHours.value, alarmMinutes.value, alarmPeriod.value);
+            } else {
+                alarmSetTime = null;
+            }
+            
+            // Update timer durations
+            const newFocusDuration = parseInt(focusDuration.value) * 60;
+            const newShortBreakDuration = parseInt(shortBreakDuration.value) * 60;
+            const newLongBreakDuration = parseInt(longBreakDuration.value) * 60;
+            
+            timerConfig.focus.duration = newFocusDuration;
+            timerConfig.short.duration = newShortBreakDuration;
+            timerConfig.long.duration = newLongBreakDuration;
+            
+            // Save to localStorage
+            localStorage.setItem('alarmEnabled', JSON.stringify(alarmEnabled));
+            localStorage.setItem('selectedAlarmSound', selectedAlarmSound);
+            localStorage.setItem('alarmSetTime', alarmSetTime);
+            localStorage.setItem('focusDuration', newFocusDuration);
+            localStorage.setItem('shortBreakDuration', newShortBreakDuration);
+            localStorage.setItem('longBreakDuration', newLongBreakDuration);
+            
+            // Reset timer with new duration if in focus mode
+            if (currentMode === 'focus') {
+                remainingSeconds = timerConfig.focus.duration;
+                updateTimerUI();
+            }
+            
+            // Start or stop alarm check based on enabled state
+            if (alarmEnabled && alarmSetTime) {
+                startAlarmCheck();
+            } else {
+                stopAlarmCheck();
+            }
+            
+            closeAlarmModalFn();
+        });
+
+        // Load alarm settings from localStorage
+        function loadAlarmSettings() {
+            const saved = localStorage.getItem('alarmEnabled');
+            const savedSound = localStorage.getItem('selectedAlarmSound');
+            const savedTime = localStorage.getItem('alarmSetTime');
+            const savedFocusDuration = localStorage.getItem('focusDuration');
+            const savedShortBreakDuration = localStorage.getItem('shortBreakDuration');
+            const savedLongBreakDuration = localStorage.getItem('longBreakDuration');
+            
+            if (saved !== null) {
+                alarmEnabled = JSON.parse(saved);
+                alarmToggle.classList.toggle('active', alarmEnabled);
+            }
+            if (savedSound) {
+                selectedAlarmSound = savedSound;
+            }
+            if (savedTime) {
+                alarmSetTime = savedTime;
+            }
+            
+            // Restore saved durations
+            if (savedFocusDuration) {
+                timerConfig.focus.duration = parseInt(savedFocusDuration);
+            }
+            if (savedShortBreakDuration) {
+                timerConfig.short.duration = parseInt(savedShortBreakDuration);
+            }
+            if (savedLongBreakDuration) {
+                timerConfig.long.duration = parseInt(savedLongBreakDuration);
+            }
+            
+            // Start alarm check if alarm is enabled
+            if (alarmEnabled && alarmSetTime) {
+                startAlarmCheck();
+            }
+        }
+
+        // Request notification permission on page load
+        function requestNotificationPermission() {
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
+        }
+
+        // Show timer notification
+        function showTimerNotification() {
+            if ('Notification' in window && Notification.permission === 'granted') {
+                const timeLeft = formatTime(remainingSeconds);
+                const modeLabel = timerConfig[currentMode].label;
+                
+                new Notification('Focus Timer', {
+                    body: `${modeLabel}: ${timeLeft} remaining`,
+                    icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%230052f5"/><text x="50" y="60" font-size="40" font-weight="bold" fill="white" text-anchor="middle">⏱</text></svg>',
+                    tag: 'timer-notification',
+                    requireInteraction: false
+                });
+            }
+        }
+
+        // Handle page visibility change (tab switch or minimize)
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                // Page is hidden (user switched tabs or minimized window)
+                showTimerNotification();
+            }
+        });
+
+        // Handle before unload (closing the website)
+        window.addEventListener('beforeunload', () => {
+            showTimerNotification();
+        });
+
+        // Music button functionality
+        const musicBtn = document.getElementById('musicBtn');
+        const musicServices = document.getElementById('musicServices');
+        let musicServicesOpen = false;
+
+        musicBtn.addEventListener('click', () => {
+            musicServicesOpen = !musicServicesOpen;
+            if (musicServicesOpen) {
+                musicServices.classList.add('active');
+            } else {
+                musicServices.classList.remove('active');
+            }
+        });
+
+        // Close music services when clicking outside
+        document.addEventListener('click', (e) => {
+            if (musicServicesOpen && 
+                !musicServices.contains(e.target) && 
+                !musicBtn.contains(e.target)) {
+                musicServices.classList.remove('active');
+                musicServicesOpen = false;
+            }
+        });
+
+        // Fullscreen functionality
+        function enterFullscreen() {
+            const elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) { /* Safari */
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) { /* IE11 */
+                elem.msRequestFullscreen();
+            }
+        }
+
+        // Auto-enter fullscreen on page load
+        function autoEnterFullscreen() {
+            // Short delay to ensure page is fully loaded
+            setTimeout(() => {
+                // Check if not already in fullscreen
+                if (!document.fullscreenElement && 
+                    !document.webkitFullscreenElement && 
+                    !document.msFullscreenElement) {
+                    enterFullscreen();
+                }
+            }, 1000);
+        }
+
+        // Handle fullscreen changes
+        document.addEventListener('fullscreenchange', () => {
+            console.log('Fullscreen changed:', document.fullscreenElement !== null);
+        });
+
+        document.addEventListener('webkitfullscreenchange', () => {
+            console.log('Safari fullscreen changed:', document.webkitFullscreenElement !== null);
+        });
+
+        document.addEventListener('msfullscreenchange', () => {
+            console.log('IE fullscreen changed:', document.msFullscreenElement !== null);
+        });
+
         // Initialize everything when the page loads
         document.addEventListener('DOMContentLoaded', () => {
             console.log('DOM fully loaded');
+            
+            // Auto-enter fullscreen
+            autoEnterFullscreen();
+            
+            // Start device clock
+            startDeviceClock();
+            
+            // Load to-do list
+            loadTodos();
+            
+            // Load alarm settings
+            loadAlarmSettings();
+            
+            // Request notification permission
+            requestNotificationPermission();
             
             // Initialize background first
             console.log('Number of background images found:', bgImages.length);
@@ -826,10 +2977,6 @@
         });
         
     </script>
-    
-    <!-- Watermark -->
-    <div style="position: fixed; bottom: 20px; right: 20px; color: rgba(255, 255, 255, 0.4); font-size: 0.9rem; font-weight: 300; letter-spacing: 0.5px; font-family: 'DM Sans', sans-serif;">
-        by Keshv
-    </div>
 </body>
+</html>
 </html>
